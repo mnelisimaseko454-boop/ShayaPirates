@@ -1,86 +1,78 @@
-// Shaya Pirates Bot - Admin Approve / Decline + Auto Payment Channel Post
+// Shaya Pirates Bot - Telegram - FINAL
 const TelegramBot = require('node-telegram-bot-api');
-const TOKEN = process.env.PIRATES_BOT_TOKEN;
-const APP_URL = process.env.PIRATES_APP_URL || 'https://shaya-pirates.onrender.com';
-const ADMIN_ID = process.env.PIRATES_ADMIN_ID;
-const PAYMENT_CHANNEL = process.env.PIRATES_PAYMENT_CHANNEL || '@ShayaPiratesPayment';
-const API = process.env.PIRATES_APP_URL || 'http://localhost:3000';
-if(!TOKEN){ console.log('Missing PIRATES_BOT_TOKEN'); process.exit(1); }
-const bot = new TelegramBot(TOKEN, {polling:true});
-console.log('Shaya Pirates Bot running...');
-
-bot.onText(/\/start(?:\s+ref_(.+))?/, async (msg, m)=>{
-  const ref = m[1]; const userId = msg.from.id;
-  if(ref && String(ref)!==String(userId)){ try{ await fetch(API+'/api/pirate/set-ref',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:userId, ref})}); }catch(e){} }
-  await bot.sendMessage(msg.chat.id,
-`Ahoy, Captain ${msg.from.first_name}! 🏴‍☠️☠️
-
-Welcome aboard the Shaya Pirates fleet! Build your legendary crew, gather golden doubloons, and conquer the high seas!
-
-💰 My Balance = Gold to buy pirates
-💰 COLLECT = Gold your pirates mined - tap to move to Balance
-📈 Daily Income = What your pirates earn in 24h
-⏳ Pirates work 30 days, then retire - re-hire to keep earning
-
-👥 Partners: Earn 10% + 25 Gold bonus
-🪙 10,000 Gold = $1.00
-💸 Withdraw Min: 10,000 Gold ($1) - Fee 5%
-
-Tap below to launch the Mini App! ⚓`,{
-    reply_markup:{inline_keyboard:[
-      [{text:'🏴‍☠️ Play Shaya Pirates Mini App', web_app:{url:APP_URL+'?start='+userId+(ref?'&ref='+ref:'')}}],
-      [{text:'💳 Payment Channel', url:'https://t.me/'+PAYMENT_CHANNEL.replace('@','')}],
-      [{text:'📖 How It Works', callback_data:'how'}]
+const BOT_TOKEN = process.env.BOT_TOKEN;
+const ADMIN_ID = process.env.ADMIN_ID;
+const PAYMENT_CHANNEL = process.env.PAYMENT_CHANNEL || '@ShayaPiratesPayment';
+const WEBAPP_URL = process.env.WEBAPP_URL || 'https://shaya-pirates.onrender.com';
+if(!BOT_TOKEN){ console.log('⚠️ No BOT_TOKEN - bot.js disabled'); module.exports={notifyAdminWithdraw:async()=>{}, notifyAdminDeposit:async()=>{}}; return; }
+const bot = new TelegramBot(BOT_TOKEN, {polling:true});
+console.log('🏴‍☠️ Shaya Pirates Bot running');
+bot.onText(/\/start(?:\s+(.*))?/, async (msg, match)=>{
+  const chatId = msg.chat.id;
+  const ref = match[1] || '';
+  let refParam = '';
+  if(ref && ref.startsWith('ref_')){ refParam = '?start='+ref; }
+  const name = msg.from.first_name || 'Captain';
+  await bot.sendMessage(chatId, `🏴‍☠️ Ahoy ${name}! Welcome to Shaya Pirates!\n\n🎁 YOU GOT 100 GOLD FREE - Starter Bonus!\n\n🪙 Hire pirates → They mine Gold daily\n💰 COLLECT Gold → Withdraw to GRAM / TRX / USDT\n👥 Invite friends → Earn 10%\n\nYour 100 Gold is already in your balance. Deposit more to hire your first pirate!`, {
+    reply_markup:{ inline_keyboard:[
+      [{text:'🏴‍☠️ PLAY SHAYA PIRATES - CLAIM 100 GOLD', web_app:{url: WEBAPP_URL + refParam}}],
+      [{text:'💰 Deposit', callback_data:'deposit'}, {text:'💸 Withdraw', callback_data:'withdraw'}],
+      [{text:'👥 Partners', callback_data:'partners'}, {text:'📢 Payment Channel', url:'https://t.me/'+PAYMENT_CHANNEL.replace('@','')}]
     ]}
   });
 });
-bot.onText(/\/payment/, (msg)=> bot.sendMessage(msg.chat.id, '💳 All payments posted here:\nhttps://t.me/'+PAYMENT_CHANNEL.replace('@','')));
-bot.onText(/\/balance/, async (msg)=>{
-  try{ const r=await fetch(API+'/api/pirate/user/'+msg.from.id); const u=await r.json(); bot.sendMessage(msg.chat.id, `🏴‍☠️ Your Treasure:\n\n🪙 My Balance: ${u.balance} Gold\n💰 COLLECT Pending: ${u.pending} Gold\n📈 Daily Income: +${u.dailyIncome} Gold/day\n🏴‍☠️ Crew: ${(u.crew||[]).length} pirates`); }catch(e){ bot.sendMessage(msg.chat.id,'Open Mini App to see balance'); }
-});
 bot.on('callback_query', async (q)=>{
-  const data=q.data; const chatId=q.message.chat.id;
-  if(data==='how'){ await bot.answerCallbackQuery(q.id); return bot.sendMessage(chatId, `📖 HOW IT WORKS:\n\n1️⃣ Deposit Gold (Crypto)\n2️⃣ Buy a Pirate - it mines Gold every day for 30 days\n3️⃣ Tap COLLECT - mined Gold moves to My Balance\n4️⃣ Use My Balance to buy more pirates OR Withdraw\n5️⃣ Invite friends = 10% + 25 Gold\n\n⚠️ Pirates expire in 30 days.\n💸 Withdraw fee 5%.\n🔍 Deposit proof = TxID on blockchain, NOT screenshot.`); }
-  if(data.startsWith('approve_wd_')){
-    if(String(q.from.id)!==String(ADMIN_ID)) return bot.answerCallbackQuery(q.id,{text:'Admin only!',show_alert:true});
-    const txId=data.replace('approve_wd_',''); await bot.answerCallbackQuery(q.id,{text:'Approving...'});
-    try{
-      const r=await fetch(API+'/api/pirate/approve-withdraw',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({txId})}); const d=await r.json();
-      if(!d.success) return bot.sendMessage(chatId,'❌ '+(d.error||'Failed'));
-      const tx=d.tx;
-      await bot.editMessageText(`✅ APPROVED - ${tx.id}\n@${tx.name} - ${tx.amount} Gold via ${tx.method}\nPaid: ${tx.net} Gold (~$${tx.usd})\nWallet: ${tx.wallet}`,{chat_id:chatId,message_id:q.message.message_id});
-      try{ await bot.sendMessage(tx.user_id, `✅ WITHDRAWAL PAID! 🏴‍☠️\n\n💰 ${tx.net} Gold (~$${tx.usd}) via ${tx.method}\n🆔 ${tx.id}\n\nCheck your wallet! Posted in ${PAYMENT_CHANNEL}`); }catch(e){}
-      await bot.sendMessage(PAYMENT_CHANNEL, `✅ Withdrawal Completed! 🏴‍☠️\n@${tx.name}\n\n💰 Amount: ${tx.net} Gold (~$${tx.usd} USD)\n💳 Currency: ${tx.method}\n📍 Destination Wallet:\n${tx.wallet}\n🆔 Transaction ID: ${tx.id}\n\nYour booty has been successfully transferred to your wallet!`);
-      await bot.sendMessage(chatId, `✅ Posted to ${PAYMENT_CHANNEL}`);
-    }catch(e){ bot.sendMessage(chatId,'Error: '+e.message); } return;
-  }
-  if(data.startsWith('decline_wd_')){
-    if(String(q.from.id)!==String(ADMIN_ID)) return bot.answerCallbackQuery(q.id,{text:'Admin only!',show_alert:true});
-    const txId=data.replace('decline_wd_',''); await bot.answerCallbackQuery(q.id,{text:'Declining...'});
-    try{
-      const r=await fetch(API+'/api/pirate/decline-withdraw',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({txId})}); const d=await r.json();
-      if(!d.success) return bot.sendMessage(chatId,'❌ '+(d.error||'Failed'));
-      await bot.editMessageText(`❌ DECLINED - ${txId}\nRefunded to user.`,{chat_id:chatId,message_id:q.message.message_id});
-      try{ await bot.sendMessage(d.tx.user_id, `❌ Withdrawal Declined\n\nYour ${d.tx.amount} Gold was refunded to My Balance.`); }catch(e){}
-    }catch(e){ bot.sendMessage(chatId,'Error: '+e.message); } return;
-  }
-  if(data.startsWith('approve_dep_')){
-    if(String(q.from.id)!==String(ADMIN_ID)) return bot.answerCallbackQuery(q.id,{text:'Admin only!',show_alert:true});
-    const txId=data.replace('approve_dep_',''); await bot.answerCallbackQuery(q.id,{text:'Approving deposit...'});
-    try{
-      const r=await fetch(API+'/api/pirate/approve-deposit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({txId})}); const d=await r.json();
-      if(!d.success) return bot.sendMessage(chatId,'❌ '+(d.error||'Failed'));
-      await bot.editMessageText(`✅ DEPOSIT APPROVED - ${txId}\n+${d.tx.amount} Gold to @${d.tx.name}`,{chat_id:chatId,message_id:q.message.message_id});
-      try{ await bot.sendMessage(d.tx.user_id, `✅ DEPOSIT APPROVED! 💰\n\n+${d.tx.amount} Gold added to My Balance!\nYou can now hire pirates! 🏴‍☠️`); }catch(e){}
-    }catch(e){ bot.sendMessage(chatId,'Error: '+e.message); } return;
-  }
+  const chatId = q.message.chat.id;
+  if(q.data==='deposit') await bot.sendMessage(chatId, '💰 Deposit: Open app → Deposit → Send crypto to admin wallet → Paste TxID. 10,000 Gold = $1');
+  if(q.data==='withdraw') await bot.sendMessage(chatId, '💸 Withdraw: Open app → Withdraw → Choose method → Min 10,000 Gold ($1), TRC20 Min 120,000 Gold. Fee 5%.');
+  if(q.data==='partners') await bot.sendMessage(chatId, '👥 Partners: Open app → Partners → Copy link → Share. Earn 10% + 25 Gold per friend.');
+  bot.answerCallbackQuery(q.id);
 });
-async function notifyAdminWithdraw(tx){
+async function notifyAdminWithdraw(t){
   if(!ADMIN_ID) return;
-  await bot.sendMessage(ADMIN_ID, `🚨 NEW WITHDRAW REQUEST\n\n👤 @${tx.name} (ID: ${tx.user_id})\n💰 Amount: ${tx.amount} Gold\n💸 Fee: ${tx.fee} Gold (Your profit)\n💰 Net to pay: ${tx.net} Gold (~$${tx.usd})\n💳 Method: ${tx.method}\n📍 Wallet: ${tx.wallet}\n🆔 ID: ${tx.id}\n\n⚠️ YOU send crypto FIRST, then tap Approve!`,{reply_markup:{inline_keyboard:[[{text:'✅ I SENT CRYPTO - APPROVE',callback_data:'approve_wd_'+tx.id}],[{text:'❌ DECLINE - REFUND',callback_data:'decline_wd_'+tx.id}]]}});
+  await bot.sendMessage(ADMIN_ID, `💸 NEW WITHDRAW\n\n👤 ${t.name} (ID: ${t.user_id})\n🪙 ${t.amount} Gold → Net ${t.net} Gold (~$${t.usd})\n💳 ${t.method}\n🏦 ${t.wallet}\n🧾 Fee: ${t.fee} Gold\n🆔 ${t.id}`, {
+    reply_markup:{ inline_keyboard:[
+      [{text:'✅ APPROVE + POST TO CHANNEL', callback_data:'approve_wd_'+t.id}],
+      [{text:'❌ DECLINE + REFUND', callback_data:'decline_wd_'+t.id}]
+    ]}
+  });
 }
-async function notifyAdminDeposit(tx){
+async function notifyAdminDeposit(t){
   if(!ADMIN_ID) return;
-  await bot.sendMessage(ADMIN_ID, `💰 NEW DEPOSIT REQUEST\n\n👤 @${tx.name} (ID: ${tx.user_id})\n🪙 Gold: ${tx.amount}\n💳 Method: ${tx.method}\n🔗 TxID: ${tx.txId}\n🆔 ID: ${tx.id}\n\n🔍 CHECK:\nTRC20: tronscan.org -> paste TxID\nBEP20: bscscan.com -> paste TxID\nTON: tonviewer.com -> paste TxID\n\nIf To = YOUR wallet + SUCCESS, tap Approve!`,{reply_markup:{inline_keyboard:[[{text:'✅ VERIFIED - APPROVE DEPOSIT',callback_data:'approve_dep_'+tx.id}],[{text:'❌ FAKE - DECLINE',callback_data:'decline_wd_'+tx.id}]]}});
+  await bot.sendMessage(ADMIN_ID, `💰 NEW DEPOSIT REQUEST\n\n👤 ${t.name} (ID: ${t.user_id})\n🪙 ${t.amount} Gold\n💳 ${t.method}\n🔗 TxID: ${t.txId}\n🆔 ${t.id}`, {
+    reply_markup:{ inline_keyboard:[
+      [{text:'✅ APPROVE DEPOSIT', callback_data:'approve_dep_'+t.id}],
+      [{text:'❌ DECLINE', callback_data:'decline_dep_'+t.id}]
+    ]}
+  });
 }
-module.exports={bot, notifyAdminWithdraw, notifyAdminDeposit};
+bot.on('callback_query', async (q)=>{
+  const data = q.data || '';
+  if(!data.startsWith('approve_') && !data.startsWith('decline_')) return;
+  const id = data.replace('approve_wd_','').replace('decline_wd_','').replace('approve_dep_','').replace('decline_dep_','');
+  const base = process.env.RENDER_URL || WEBAPP_URL;
+  try{
+    if(data.startsWith('approve_wd_')){
+      const r = await fetch(base + '/api/pirate/approve-withdraw', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({txId:id})});
+      const d = await r.json();
+      if(d.success){
+        await bot.sendMessage(q.message.chat.id, `✅ Approved ${id}. Now pay user manually from your wallet, then post to channel.`);
+        await bot.sendMessage(PAYMENT_CHANNEL, `💸 PAID! 🏴‍☠️\n\n👤 ${d.tx.name}\n🪙 ${d.tx.net} Gold (~$${d.tx.usd})\n💳 ${d.tx.method}\n🆔 ${d.tx.id}\n\n#ShayaPirates #Paid`);
+        try{ await bot.sendMessage(d.tx.user_id, `✅ Your withdraw ${id} was APPROVED! ${d.tx.net} Gold (~$${d.tx.usd}) via ${d.tx.method} - Check your wallet!`); }catch(e){}
+      } else await bot.sendMessage(q.message.chat.id, 'Error: '+(d.error||'failed'));
+    }
+    if(data.startsWith('decline_wd_')){
+      const r = await fetch(base + '/api/pirate/decline-withdraw', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({txId:id})});
+      const d = await r.json();
+      await bot.sendMessage(q.message.chat.id, d.success ? `❌ Declined ${id} + refunded.` : 'Error: '+(d.error||'failed'));
+    }
+    if(data.startsWith('approve_dep_')){
+      const r = await fetch(base + '/api/pirate/approve-deposit', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({txId:id})});
+      const d = await r.json();
+      await bot.sendMessage(q.message.chat.id, d.success ? `✅ Deposit ${id} approved. User got ${d.tx.amount} Gold.` : 'Error: '+(d.error||'failed'));
+      if(d.success){ try{ await bot.sendMessage(d.tx.user_id, `✅ Deposit approved! +${d.tx.amount} Gold added to your balance!`); }catch(e){} }
+    }
+  }catch(e){ await bot.sendMessage(q.message.chat.id, 'Bot error: '+e.message); }
+  bot.answerCallbackQuery(q.id);
+});
+module.exports={notifyAdminWithdraw, notifyAdminDeposit, bot};
