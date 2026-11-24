@@ -4,106 +4,65 @@
 <script src="https://js.onclckvd.com/in-stream-ad-admanager/tma.js"></script>
 <script src="https://giga.pub/sdk.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Georgia,'Times New Roman',serif}
-body{background:#000;color:#1a1a1a;padding:10px;padding-bottom:90px}
-/* ===== REALISTIC PARCHMENT - LIKE SCREENSHOT ===== */
-.stone{
-  background:linear-gradient(180deg,#F2EED8 0%,#E8E0BE 45%,#D8CBA0 100%);
-  border:3px solid #6b5a3e;
-  border-radius:18px;
-  box-shadow: inset 0 3px 0 rgba(255,255,255,.9), inset 0 -6px 14px rgba(80,60,20,.35), inset 3px 0 8px rgba(255,255,255,.4), 0 6px 12px rgba(0,0,0,.6);
-  color:#1a1a1a;
-}
-.stone-oval{
-  background:linear-gradient(180deg,#F5F0DA 0%,#E9E2C0 50%,#D8CBA0 100%);
-  border:3px solid #6b5a3e;
-  border-radius:999px;
-  box-shadow: inset 0 3px 0 #fff, inset 0 -4px 8px rgba(80,60,20,.3), 0 4px 8px rgba(0,0,0,.6);
-  padding:8px 14px;
-}
-.stone-card{
-  background:linear-gradient(180deg,#F2EED8 0%,#E9E2C0 60%,#D5C89E 100%);
-  border:3px solid #6b5a3e;
-  border-radius:22px;
-  box-shadow: inset 0 3px 0 #fff, inset 0 -6px 14px rgba(80,60,20,.3), 0 6px 14px rgba(0,0,0,.6);
-  padding:14px;
-}
-.stone-card-inner{
-  background:linear-gradient(180deg,#E2D9B4,#CFC39A);
-  border:2px solid #8a7a5a;
-  border-radius:14px;
-  padding:10px;
-  box-shadow: inset 0 2px 0 #fff, inset 0 -3px 6px rgba(0,0,0,.2);
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Georgia,Arial,sans-serif}
+body{background:#000;color:#111;padding:10px;padding-bottom:90px}
+button{cursor:pointer}
+.stone{background:linear-gradient(180deg,#E8E0C8,#CFC7A8 55%,#B8AE8D);border:3px solid #6b6250;border-radius:14px;box-shadow:inset 0 2px 0 #fff, inset 0 -3px 0 rgba(0,0,0,.25), 0 4px 8px rgba(0,0,0,.5);color:#1a1a1a}
+.stone-oval{background:linear-gradient(180deg,#E8E0C8,#CFC7A8);border:3px solid #6b6250;border-radius:999px;box-shadow:inset 0 2px 0 #fff, 0 3px 6px rgba(0,0,0,.5);padding:8px 14px}
+.stone-card{background:linear-gradient(180deg,#EFE8D0,#D8D0B2);border:3px solid #6b6250;border-radius:18px;box-shadow:inset 0 2px 0 #fff, 0 4px 10px rgba(0,0,0,.5);padding:14px}
+.stone-card-inner{background:linear-gradient(180deg,#D8D0B2,#C8BFA0);border:2px solid #8a7a5a;border-radius:12px;padding:10px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.bal-oval{flex:1;display:flex;align-items:center;gap:10px}
-.coin-img{width:38px;height:38px;object-fit:cover;border-radius:50%;border:2px solid #B8860B;box-shadow:0 2px 4px rgba(0,0,0,.5);background:#FFD700;flex-shrink:0}
-.coin-img.small{width:28px;height:28px}
-.coin-img.tiny{width:22px;height:22px}
-.bal-oval small{display:block;font-size:12px;color:#555;font-family:Georgia,serif}
-.bal-oval b{font-size:20px;font-weight:900;letter-spacing:.3px}
+.bal-oval{flex:1;display:flex;align-items:center;gap:8px}
+.bal-oval .coin{font-size:28px}
+.bal-oval small{display:block;font-size:11px;color:#444}
+.bal-oval b{font-size:19px}
 .prof{display:flex;align-items:center;gap:6px}
-.prof img{width:38px;height:38px;border-radius:50%;border:3px solid #FFD700;object-fit:cover;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.5)}
-.prof-btn{padding:9px 12px;font-weight:900;font-size:15px}
-.tabs{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin:12px 0}
-.tabs button{padding:13px 2px;font-weight:900;font-size:15px;font-family:Georgia,serif}
-.tabs button.active{
-  background:linear-gradient(180deg,#FFF176,#FFD700 55%,#E6B800);
-  box-shadow: inset 0 2px 0 #fff, 0 0 22px #FFD700, 0 4px 8px rgba(0,0,0,.5);
-  border-color:#6b5a3e;
-}
+.prof img{width:38px;height:38px;border-radius:50%;border:3px solid #FFD700;object-fit:cover;background:#fff}
+.prof-btn{padding:8px 10px;font-weight:900;font-size:14px}
+.tabs{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin:12px 0}
+.tabs button{padding:12px 2px;font-weight:900;font-size:13px}
+.tabs button.active{background:linear-gradient(180deg,#FFE95A,#FFD700);box-shadow:0 0 18px #FFD700}
 .hidden{display:none!important}
-input,select{width:100%;padding:13px;border-radius:14px;border:2.5px solid #8a7a5a;background:linear-gradient(180deg,#F5F0DA,#E9E2C0);margin-top:8px;font-size:15px;font-family:Georgia,serif;box-shadow:inset 0 2px 4px rgba(0,0,0,.15)}
-.bigbtn{
-  background:linear-gradient(180deg,#FFF176 0%,#FFD700 50%,#F5C400 100%);
-  border:3px solid #6b5a3e;border-radius:999px;padding:13px;font-weight:900;width:100%;font-size:18px;
-  box-shadow: inset 0 3px 0 #fff, inset 0 -4px 8px rgba(150,100,0,.35), 0 6px 10px rgba(0,0,0,.5);
-  text-shadow:0 1px 0 rgba(255,255,255,.7);
-}
+input,select{width:100%;padding:12px;border-radius:10px;border:2px solid #8a7a5a;background:#EFE8D0;margin-top:8px;font-size:14px}
+.bigbtn{background:linear-gradient(180deg,#FFE95A,#FFD700);border:3px solid #6b6250;border-radius:999px;padding:12px;font-weight:900;width:100%;font-size:16px;box-shadow:0 4px 8px rgba(0,0,0,.4)}
 .daily-oval{text-align:center;font-weight:900;padding:10px 14px;font-size:14px;display:flex;justify-content:center;gap:8px;align-items:center;flex-wrap:wrap}
 .collectWrap{display:flex;gap:10px;margin-top:12px}
-.parrotCard{flex:1.1;text-align:center;padding:16px 10px}
-.parrot-img{width:100%;max-width:150px;height:130px;object-fit:contain;filter:drop-shadow(0 6px 8px rgba(0,0,0,.35));margin:0 auto;display:block}
-.parrotCard .sub{font-size:15px;color:#5a5340;line-height:1.2;margin-top:2px}
-.parrotCard .count{margin:12px auto 8px;background:linear-gradient(180deg,#EDE6CC,#D8CBA0);border:2.5px solid #8a7a5a;border-radius:999px;width:110px;padding:7px;font-weight:900;font-size:20px;box-shadow:inset 0 2px 0 #fff, 0 2px 4px rgba(0,0,0,.3)}
-.parrotCard .gold{display:flex;justify-content:center;align-items:center;gap:8px;font-weight:900;font-size:22px}
+.parrotCard{flex:1.1;text-align:center}
+.parrotCard .parrot{font-size:64px;line-height:1}
+.parrotCard .count{margin:10px auto 4px;background:#D8D0B2;border:2px solid #8a7a5a;border-radius:999px;width:110px;padding:4px;font-weight:900}
+.parrotCard .gold{font-weight:900;font-size:18px}
 .crewGrid{flex:1.4;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 .crewSlot{text-align:center;padding:8px 4px;min-height:72px;display:flex;flex-direction:column;justify-content:center;align-items:center}
-.crewSlot .p{font-size:28px;line-height:1;filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
+.crewSlot .p{font-size:28px;line-height:1}
 .crewSlot .n{font-weight:900;margin-top:4px}
 .crewSlot.empty{opacity:.45}
-.crewSlot.empty .p{filter:grayscale(1)}
-.tavernTitle{color:#FFD700;font-weight:900;margin:18px 0 10px;font-size:19px;text-shadow:0 2px 4px #000}
+.tavernTitle{color:#FFD700;font-weight:900;margin:18px 0 10px;font-size:19px}
 .shopGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .pirateCard{text-align:center;padding:10px 6px;position:relative}
-.pirateCard .imgBox{background:linear-gradient(180deg,#EDE6CC,#D8CBA0);border:2.5px solid #8a7a5a;border-radius:10px;padding:14px 6px 8px;box-shadow:inset 0 2px 0 #fff}
-.pirateCard .pimg{font-size:52px;line-height:1;min-height:64px;display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 3px 3px rgba(0,0,0,.3))}
+.pirateCard .imgBox{background:linear-gradient(180deg,#D8D0B2,#C8BFA0);border:2px solid #8a7a5a;border-radius:6px;padding:14px 6px 8px}
+.pirateCard .pimg{font-size:52px;line-height:1;min-height:64px;display:flex;align-items:center;justify-content:center}
 .pirateCard h3{font-size:15px;margin:8px 0 4px}
-.pirateCard p{font-size:12px;color:#444;font-weight:700}
-.pirateCard .dailyGold{font-weight:900;font-size:15px;margin:4px 0;display:flex;justify-content:center;align-items:center;gap:5px}
-.pirateCard .priceBtn{margin-top:8px;border-radius:999px;padding:9px 6px;font-weight:900;font-size:15px;display:flex;justify-content:center;gap:6px;align-items:center}
+.pirateCard p{font-size:12px;color:#333;font-weight:700}
+.pirateCard .dailyGold{font-weight:900;font-size:15px;margin:4px 0}
+.pirateCard .priceBtn{margin-top:8px;border-radius:999px;padding:8px 6px;font-weight:900;font-size:15px;display:flex;justify-content:center;gap:6px}
 .pirateCard.owned{outline:3px solid #FFD700}
-.pirateCard .ownedBadge{position:absolute;top:6px;right:6px;background:#FFD700;border:2px solid #6b5a3e;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:900;box-shadow:0 2px 4px rgba(0,0,0,.4)}
-/* PARTNERS - EXACTLY LIKE SCREENSHOT */
-.partRow{display:flex;gap:10px;margin-top:10px}
-.partRow input{flex:1;margin:0;font-size:16px;font-weight:700}
-.partRow .coinRow{display:flex;align-items:center;gap:8px;flex:1;padding:12px 12px}
-.copyBtn{width:115px;border-radius:16px;font-weight:900;font-size:17px}
+.pirateCard .ownedBadge{position:absolute;top:6px;right:6px;background:#FFD700;border:2px solid #6b6250;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:900}
+.partRow{display:flex;gap:8px;margin-top:10px}
+.partRow input{flex:1;margin:0}
+.copyBtn{width:110px;border-radius:12px;font-weight:900}
 .twoBox{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-.infoBox{text-align:center;padding:16px 8px}
-.infoBox h3{font-size:20px;display:flex;justify-content:center;align-items:center;gap:6px}
-.infoBox p{font-size:14px;margin-top:8px;line-height:1.35;color:#333}
-.statLabel{text-align:center;font-weight:900;padding:13px 4px;font-size:16px}
-.statVal{text-align:center;font-weight:900;padding:14px 4px;font-size:22px;display:flex;justify-content:center;align-items:center;gap:8px}
-.tableHead{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;background:linear-gradient(180deg,#DDE8C8,#C8D8B0);padding:12px 6px;font-weight:900;font-size:15px;text-align:center;border-radius:14px 14px 0 0;border-bottom:2px solid #8a7a5a}
-.tableEmpty{text-align:center;padding:22px 10px;color:#555;font-weight:700;font-size:15px;line-height:1.4}
-/* PROFILE */
-.profileAvatar{width:110px;height:110px;border-radius:50%;border:4px solid #FFD700;object-fit:cover;background:#fff;margin:6px auto;box-shadow:0 4px 10px rgba(0,0,0,.4)}
-.profileName{font-size:32px;font-weight:900;text-align:center;margin-top:6px;letter-spacing:1px}
-.idPill{display:inline-block;background:linear-gradient(180deg,#EDE6CC,#D8CBA0);border:2.5px solid #8a7a5a;border-radius:999px;padding:6px 16px;font-weight:900;margin:8px auto;box-shadow:inset 0 2px 0 #fff}
+.infoBox{text-align:center;padding:12px 6px}
+.infoBox h3{font-size:16px}
+.infoBox p{font-size:12px;margin-top:6px;line-height:1.4;color:#333}
+.statLabel{text-align:center;font-weight:900;padding:10px 4px;font-size:14px}
+.statVal{text-align:center;font-weight:900;padding:12px 4px;font-size:20px}
+.tableHead{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;background:#C8D8B8;padding:10px 6px;font-weight:900;font-size:13px;text-align:center;border-radius:10px 10px 0 0}
+.profileAvatar{width:110px;height:110px;border-radius:50%;border:4px solid #FFD700;object-fit:cover;background:#fff;margin:6px auto}
+.profileName{font-size:32px;font-weight:900;text-align:center;margin-top:6px}
+.idPill{display:inline-block;background:#D8D0B2;border:2px solid #8a7a5a;border-radius:999px;padding:6px 14px;font-weight:900;margin:8px auto}
 .guideRow{display:flex;gap:10px;margin-top:10px}
 .guideRow button{flex:1;padding:12px 4px;font-weight:900;font-size:14px}
-.modalBg{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:flex-end;justify-content:center;z-index:999}
+.modalBg{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:flex-end;justify-content:center;z-index:999}
 .modal{background:#2B2118;border:3px solid #FFD700;border-top-left-radius:24px;border-top-right-radius:24px;padding:22px 16px 18px;text-align:center;width:100%;max-width:480px}
 .modal h2{color:#FFE9A8;font-size:26px}
 .modal h3{color:#FFE9A8;font-size:24px;margin:14px 0 4px}
@@ -111,39 +70,34 @@ input,select{width:100%;padding:13px;border-radius:14px;border:2.5px solid #8a7a
 .modal .price{color:#FFD700;font-size:28px;font-weight:900;margin:12px 0}
 .modalRow{display:flex;gap:10px;margin-top:14px}
 .modalRow button{flex:1;padding:14px;font-weight:900;font-size:16px}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#0a0a0a;display:flex;justify-content:space-around;padding:10px;color:#777;z-index:99;border-top:1px solid #333}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:flex;justify-content:space-around;padding:10px;color:#888;z-index:99;border-top:1px solid #333}
 .nav div{text-align:center;font-size:12px;line-height:1.2}
 .nav div.active{color:#FFD700}
 .starter{background:#111;color:#FFD700;border:2px solid #FFD700;border-radius:12px;padding:10px;text-align:center;font-weight:900;margin-bottom:10px;font-size:13px}
-.adNote{font-size:13px;color:#5a5340;margin-top:8px;text-align:center;line-height:1.3}
+.adNote{font-size:11px;color:#666;margin-top:6px;text-align:center}
 .activeBadge{background:#111;color:#FFD700;border:2px solid #FFD700;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:900}
 </style></head><body>
-
 <div class="top">
-  <div class="stone-oval bal-oval"><img class="coin-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Gold_coin_icon.png/120px-Gold_coin_icon.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/726/726498.png'"><div><small>My Balance</small><b id="bal">100 Gold</b></div></div>
+  <div class="stone-oval bal-oval"><span class="coin">🪙</span><div><small>My Balance</small><b id="bal">100 Gold</b></div></div>
   <div class="prof"><img id="topAvatar" src="https://api.dicebear.com/9.x/pirate/svg?seed=Captain"><button class="stone prof-btn" onclick="showPage('profile')"><span id="topName">Profile</span></button></div>
 </div>
-
 <div class="tabs">
   <button class="stone active" onclick="showPage('pirates')">Pirates</button>
   <button class="stone" onclick="showPage('deposit')">Deposit</button>
   <button class="stone" onclick="showPage('withdraw')">Withdraw</button>
   <button class="stone" onclick="showPage('partners')">Partners</button>
 </div>
-
-<!-- PIRATES - REALISTIC PARROT -->
 <div id="page-pirates">
   <div class="starter">🎁 NEW CAPTAINS GET 100 GOLD FREE — Already in your balance!</div>
-  <div class="stone-oval daily-oval">Daily income <img class="coin-img tiny" src="https://cdn-icons-png.flaticon.com/512/726/726498.png"> <span id="dailyIncomeTop">+0.00</span> <span class="activeBadge" id="activeCount">Active: 0 / 10</span> <span style="font-size:11px">14 days • 15% upkeep • Tiered Cap</span></div>
+  <div class="stone-oval daily-oval">Daily income <span>🪙</span> <span id="dailyIncomeTop">+0.00</span> <span class="activeBadge" id="activeCount">Active: 0 / 10</span> <span style="font-size:11px">14 days • 15% upkeep • Tiered Cap</span></div>
   <div class="collectWrap">
     <div class="stone stone-card parrotCard">
-      <img class="parrot-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Blue-fronted_Amazon_%28Amazona_aestiva%29.jpg/640px-Blue-fronted_Amazon_%28Amazona_aestiva%29.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/616/616408.png'" alt="Parrot">
-      <div class="sub">Your Parrot guards the<br>loot</div>
+      <div class="parrot">🦜</div>
+      <div style="font-size:11px;color:#666">Your Parrot guards the loot</div>
       <div class="count" id="crewCount">0 / 10</div>
-      <div class="gold"><img class="coin-img small" src="https://cdn-icons-png.flaticon.com/512/726/726498.png"> <span id="pending">0.00</span></div>
-      <button class="stone bigbtn" style="margin-top:10px" onclick="collectWithAd()">COLLECT</button>
-      <p class="adNote">📺 Short ad supports your<br>crew — then you collect</p>
-      <p class="adNote">⏳ Wait 1 hour between<br>COLLECTs.</p>
+      <div class="gold">🪙 <span id="pending">0.00</span></div>
+      <button class="stone bigbtn" style="margin-top:8px" onclick="collectWithAd()">COLLECT</button>
+      <p class="adNote">📺 Short ad supports your crew — then you collect</p>
       <p id="collectMsg" style="font-size:12px;margin-top:6px"></p>
     </div>
     <div class="crewGrid" id="crewGrid"></div>
@@ -152,8 +106,6 @@ input,select{width:100%;padding:13px;border-radius:14px;border:2.5px solid #8a7a
   <div class="shopGrid" id="shopList"></div>
   <p class="adNote">Max 10 Active Pirates • Small 200% cap • Mid 160% • Big 130% • Re-hire after 14 days</p>
 </div>
-
-<!-- DEPOSIT -->
 <div id="page-deposit" class="hidden">
   <div class="stone-card"><h2>Deposit - Buy Gold</h2><p style="font-size:13px;margin-top:4px">10,000 Gold = $1.00. Deposit fee 0% - you get full Gold.</p>
   <div class="stone-card-inner" style="margin-top:10px;font-size:13px"><b>🎁 Deposit Bonus:</b><br>$1-$9 = 0% • $10-$49 = +5% • $50+ = +10% (max)</div>
@@ -164,8 +116,6 @@ input,select{width:100%;padding:13px;border-radius:14px;border:2.5px solid #8a7a
   <input id="depGold" type="number" placeholder="Gold you paid for e.g. 50000">
   <button class="bigbtn" style="margin-top:10px" onclick="verifyDeposit()">🔍 SEND TO ADMIN FOR VERIFICATION</button><p id="depMsg"></p></div>
 </div>
-
-<!-- WITHDRAW -->
 <div id="page-withdraw" class="hidden">
   <div class="stone-card"><h2>Withdraw</h2>
     <div style="display:flex;justify-content:space-between;margin-top:8px"><span>My Balance</span><b id="wBal">0 Gold</b></div>
@@ -177,28 +127,24 @@ input,select{width:100%;padding:13px;border-radius:14px;border:2.5px solid #8a7a
   </div>
   <div class="stone-card"><h3>📜 Withdraw History</h3><div id="wHistory">No withdrawals yet</div></div>
 </div>
-
-<!-- PARTNERS - EXACTLY LIKE YOUR SCREENSHOT -->
 <div id="page-partners" class="hidden">
   <div class="stone-card">
-    <div class="partRow"><div class="stone coinRow"><img class="coin-img tiny" src="https://cdn-icons-png.flaticon.com/512/726/726498.png"> <span id="pendingPartnersText">0.00</span></div><button class="stone copyBtn" onclick="collectWithAd()">COLLECT</button></div>
-    <div class="partRow"><input class="stone" id="refLink" readonly value="https://t.me/ShayaPiratesBot?start=ref_"><button class="stone copyBtn" onclick="copyRef()">Copy</button></div>
+    <div class="partRow"><input class="stone" id="pendingPartners" readonly value="🪙 0"><button class="stone copyBtn" onclick="collectWithAd()">COLLECT</button></div>
+    <div class="partRow"><input class="stone" id="refLink" readonly value="https://t.me/..."><button class="stone copyBtn" onclick="copyRef()">Copy</button></div>
     <div class="twoBox">
-      <div class="stone infoBox"><h3>🏴‍☠️ 10%</h3><p>Get 10% from partners<br>on character purchases.</p></div>
-      <div class="stone infoBox"><h3><img class="coin-img tiny" src="https://cdn-icons-png.flaticon.com/512/726/726498.png"> 25</h3><p>Get 25 Gold when<br>partner joins channel &<br>hires a pirate.</p></div>
+      <div class="stone infoBox"><h3>🏴‍☠️ 10%</h3><p>Get 10% from partners on character purchases.</p></div>
+      <div class="stone infoBox"><h3>🪙 25</h3><p>Get 25 Gold when partner joins channel & hires a pirate.</p></div>
     </div>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
-    <div><div class="stone statLabel">Partners</div><div class="stone statVal" style="margin-top:8px" id="pCount">0</div></div>
-    <div><div class="stone statLabel">Total income</div><div class="stone statVal" style="margin-top:8px"><img class="coin-img small" src="https://cdn-icons-png.flaticon.com/512/726/726498.png"> <span id="pIncome">0.00</span></div></div>
+    <div><div class="stone statLabel">Partners</div><div class="stone statVal" style="margin-top:6px" id="pCount">0</div></div>
+    <div><div class="stone statLabel">Total income</div><div class="stone statVal" style="margin-top:6px">🪙 <span id="pIncome">0</span></div></div>
   </div>
   <div class="stone-card" style="padding:0;overflow:hidden;margin-top:10px">
     <div class="tableHead"><span>Date</span><span>User</span><span>Deposit</span><span>Income</span></div>
-    <div class="tableEmpty" id="partnerTable">No mates invited yet. Share your link to start earning!</div>
+    <div style="text-align:center;padding:18px;color:#555;font-weight:700;font-size:13px">No mates invited yet. Share your link to start earning!</div>
   </div>
 </div>
-
-<!-- PROFILE -->
 <div id="page-profile" class="hidden">
   <div class="stone-card" style="text-align:center">
     <img id="profileAvatar" class="profileAvatar" src="https://api.dicebear.com/9.x/pirate/svg?seed=Captain">
@@ -209,9 +155,9 @@ input,select{width:100%;padding:13px;border-radius:14px;border:2.5px solid #8a7a
     <div style="text-align:center;margin-top:10px"><button class="stone" style="padding:8px 14px;font-weight:900" onclick="changePirateAvatar()">🎲 Change Pirate Avatar</button></div>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
-    <div><div class="stone statLabel">My balance</div><div class="stone statVal" style="margin-top:6px"><img class="coin-img small" src="https://cdn-icons-png.flaticon.com/512/726/726498.png"> <span id="prBal">0</span></div></div>
-    <div><div class="stone statLabel">Total Booty Looted</div><div class="stone statVal" style="margin-top:6px"><img class="coin-img small" src="https://cdn-icons-png.flaticon.com/512/726/726498.png"> <span id="prTotal">0</span></div></div>
-    <div><div class="stone statLabel">Daily income</div><div class="stone statVal" style="margin-top:6px"><img class="coin-img small" src="https://cdn-icons-png.flaticon.com/512/726/726498.png"> +<span id="prDaily">0</span></div></div>
+    <div><div class="stone statLabel">My balance</div><div class="stone statVal" style="margin-top:6px">🪙 <span id="prBal">0</span></div></div>
+    <div><div class="stone statLabel">Total Booty Looted</div><div class="stone statVal" style="margin-top:6px">🪙 <span id="prTotal">0</span></div></div>
+    <div><div class="stone statLabel">Daily income</div><div class="stone statVal" style="margin-top:6px">🪙 +<span id="prDaily">0</span></div></div>
     <div><div class="stone statLabel">Owned Crew</div><div class="stone statVal" style="margin-top:6px">🏴‍☠️ <span id="prCrew">0</span> / 10</div></div>
   </div>
   <div class="stone-card" style="margin-top:10px">
@@ -220,14 +166,12 @@ input,select{width:100%;padding:13px;border-radius:14px;border:2.5px solid #8a7a
     <div id="txList" style="padding:10px;font-size:13px">No transaction records found</div>
   </div>
 </div>
-
 <div class="nav">
   <div class="active" onclick="showPage('pirates')">🏴‍☠️<br>Pirates</div>
   <div onclick="showPage('deposit')">💰<br>Deposit</div>
   <div onclick="showPage('withdraw')">💸<br>Withdraw</div>
   <div onclick="showPage('partners')">👥<br>Partners</div>
 </div>
-
 <div id="recruitModal" class="modalBg hidden">
   <div class="modal">
     <h2>RECRUIT THIS PIRATE?</h2>
@@ -239,7 +183,6 @@ input,select{width:100%;padding:13px;border-radius:14px;border:2.5px solid #8a7a
     <div class="modalRow"><button class="stone" onclick="closeModal()">Cancel</button><button class="stone" style="background:#FFD700" onclick="confirmRecruitWithAd()">Recruit</button></div>
   </div>
 </div>
-
 <script>
 const AD_CONFIG = { GIGA_ZONE:'main', GIGA_APP_ID:'9376', ONCLICKA_SPOT_ID:'6155944' };
 let lastAdNetwork='giga';
@@ -251,6 +194,7 @@ async function showDualAd(){
   const tryOnclicka = () => new Promise((resolve)=>{ try{ if(!window.showOnclicka) return resolve(false); window.showOnclicka().then(()=>resolve(true)).catch(()=>resolve(false)); setTimeout(()=>resolve(false), 8000); }catch(e){ resolve(false); } });
   let ok=false;
   if(tryGigaFirst){ ok=await tryGiga(); if(!ok) ok=await tryOnclicka(); } else { ok=await tryOnclicka(); if(!ok) ok=await tryGiga(); }
+  console.log('Ad shown via', ok ? lastAdNetwork : 'none - user still proceeds');
   return ok;
 }
 function getMaxPayout(price){ if(price>=10000) return 1.30; if(price>=1000) return 1.60; return 2.0; }
@@ -310,8 +254,6 @@ function showPage(p){
   document.querySelectorAll('.nav div').forEach(d=>d.classList.remove('active'));
   const map={pirates:0,deposit:1,withdraw:2,partners:3};
   if(map[p]!==undefined) document.querySelectorAll('.tabs button')[map[p]].classList.add('active');
-  // Highlight nav like screenshot - Partners tab glows yellow when active
-  document.querySelectorAll('.nav div').forEach((d,i)=>{ if(i===map[p]) d.classList.add('active'); });
 }
 async function loadUser(){
   try{ const r=await fetch('/api/pirate/user/'+userId); user=await r.json(); saveLocal(user); }
@@ -327,7 +269,7 @@ function updateUI(){
  document.getElementById('bal').innerText=fmt(user.balance||0)+' Gold';
  document.getElementById('wBal').innerText=fmt(user.balance||0)+' Gold';
  document.getElementById('pending').innerText=fmt(user.pending||0);
- document.getElementById('pendingPartnersText').innerText=fmt(user.pending||0);
+ document.getElementById('pendingPartners').value='🪙 '+fmt(user.pending||0);
  document.getElementById('dailyIncomeTop').innerText='+'+fmt(user.dailyIncome||0);
  document.getElementById('activeCount').innerText='Active: '+getActiveCount()+' / '+MAX_ACTIVE;
  document.getElementById('crewCount').innerText=getActiveCount()+' / '+MAX_ACTIVE;
@@ -347,7 +289,7 @@ function updateUI(){
  document.getElementById('crewGrid').innerHTML=crewSlots;
  document.getElementById('shopList').innerHTML=SHOP.map((s,i)=>{
    let c=crewMap[s.id];
-   return `<div class="stone pirateCard ${c?'owned':''}">${c?'<span class="ownedBadge">x'+c.count+'</span>':''}<div class="imgBox"><div class="pimg">${s.emoji}</div><h3>${s.name}</h3><p>Daily income ${s.pct} • Max ${Math.round(getMaxPayout(s.price)*100)}%</p><div class="dailyGold"><img class="coin-img tiny" src="https://cdn-icons-png.flaticon.com/512/726/726498.png"> +${s.daily.toLocaleString()}</div></div><button class="stone priceBtn" onclick="openRecruit('${s.id}')"><img class="coin-img tiny" src="https://cdn-icons-png.flaticon.com/512/726/726498.png"> ${s.price.toLocaleString()}</button></div>`;
+   return `<div class="stone pirateCard ${c?'owned':''}">${c?'<span class="ownedBadge">x'+c.count+'</span>':''}<div class="imgBox"><div class="pimg">${s.emoji}</div><h3>${s.name}</h3><p>Daily income ${s.pct} • Max ${Math.round(getMaxPayout(s.price)*100)}%</p><div class="dailyGold">🪙 +${s.daily.toLocaleString()}</div></div><button class="stone priceBtn" onclick="openRecruit('${s.id}')">🪙 ${s.price.toLocaleString()}</button></div>`;
  }).join('');
  document.getElementById('depositList').innerHTML=METHODS.map(m=>'<div class="stone" style="padding:12px;margin-top:8px;display:flex;justify-content:space-between;align-items:center" onclick="selDep=\''+m.id+'\'"><div><b>'+m.id+'</b><br><small>Min '+m.dep.toLocaleString()+' Gold</small></div><b>›</b></div>').join('');
  document.getElementById('withdrawList').innerHTML=METHODS.map(m=>'<div class="stone" style="padding:12px;margin-top:8px;display:flex;justify-content:space-between;align-items:center" onclick="selWd=\''+m.id+'\';document.getElementById(\'wAmount\').placeholder=\'Min '+m.wd.toLocaleString()+' Gold for '+m.id+'\'"><div><b>'+m.label+'</b><br><small>'+m.sub+'</small></div><b>›</b></div>').join('');
