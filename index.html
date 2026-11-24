@@ -1,317 +1,175 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shaya Pirates</title><script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://js.onclckvd.com/in-stream-ad-admanager/tma.js"></script>
 <script src="https://giga.pub/sdk.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Georgia,Arial,sans-serif}
-body{background:#000;color:#111;padding:10px;padding-bottom:90px}
-button{cursor:pointer}
-.stone{background:linear-gradient(180deg,#E8E0C8,#CFC7A8 55%,#B8AE8D);border:3px solid #6b6250;border-radius:14px;box-shadow:inset 0 2px 0 #fff, inset 0 -3px 0 rgba(0,0,0,.25), 0 4px 8px rgba(0,0,0,.5);color:#1a1a1a}
-.stone-oval{background:linear-gradient(180deg,#E8E0C8,#CFC7A8);border:3px solid #6b6250;border-radius:999px;box-shadow:inset 0 2px 0 #fff, 0 3px 6px rgba(0,0,0,.5);padding:8px 14px}
-.stone-card{background:linear-gradient(180deg,#EFE8D0,#D8D0B2);border:3px solid #6b6250;border-radius:18px;box-shadow:inset 0 2px 0 #fff, 0 4px 10px rgba(0,0,0,.5);padding:14px}
-.stone-card-inner{background:linear-gradient(180deg,#D8D0B2,#C8BFA0);border:2px solid #8a7a5a;border-radius:12px;padding:10px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.bal-oval{flex:1;display:flex;align-items:center;gap:8px}
-.bal-oval .coin{font-size:28px}
-.bal-oval small{display:block;font-size:11px;color:#444}
-.bal-oval b{font-size:19px}
-.prof{display:flex;align-items:center;gap:6px}
-.prof img{width:38px;height:38px;border-radius:50%;border:3px solid #FFD700;object-fit:cover;background:#fff}
-.prof-btn{padding:8px 10px;font-weight:900;font-size:14px}
-.tabs{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin:12px 0}
-.tabs button{padding:12px 2px;font-weight:900;font-size:13px}
-.tabs button.active{background:linear-gradient(180deg,#FFE95A,#FFD700);box-shadow:0 0 18px #FFD700}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;padding:8px;padding-bottom:80px;font-family:Georgia,serif}
 .hidden{display:none!important}
-input,select{width:100%;padding:12px;border-radius:10px;border:2px solid #8a7a5a;background:#EFE8D0;margin-top:8px;font-size:14px}
-.bigbtn{background:linear-gradient(180deg,#FFE95A,#FFD700);border:3px solid #6b6250;border-radius:999px;padding:12px;font-weight:900;width:100%;font-size:16px;box-shadow:0 4px 8px rgba(0,0,0,.4)}
-.daily-oval{text-align:center;font-weight:900;padding:10px 14px;font-size:14px;display:flex;justify-content:center;gap:8px;align-items:center;flex-wrap:wrap}
-.collectWrap{display:flex;gap:10px;margin-top:12px}
-.parrotCard{flex:1.1;text-align:center}
-.parrotCard .parrot{font-size:64px;line-height:1}
-.parrotCard .count{margin:10px auto 4px;background:#D8D0B2;border:2px solid #8a7a5a;border-radius:999px;width:110px;padding:4px;font-weight:900}
-.parrotCard .gold{font-weight:900;font-size:18px}
-.crewGrid{flex:1.4;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.crewSlot{text-align:center;padding:8px 4px;min-height:72px;display:flex;flex-direction:column;justify-content:center;align-items:center}
-.crewSlot .p{font-size:28px;line-height:1}
-.crewSlot .n{font-weight:900;margin-top:4px}
-.crewSlot.empty{opacity:.45}
-.tavernTitle{color:#FFD700;font-weight:900;margin:18px 0 10px;font-size:19px}
-.shopGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.pirateCard{text-align:center;padding:10px 6px;position:relative}
-.pirateCard .imgBox{background:linear-gradient(180deg,#D8D0B2,#C8BFA0);border:2px solid #8a7a5a;border-radius:6px;padding:14px 6px 8px}
-.pirateCard .pimg{font-size:52px;line-height:1;min-height:64px;display:flex;align-items:center;justify-content:center}
-.pirateCard h3{font-size:15px;margin:8px 0 4px}
-.pirateCard p{font-size:12px;color:#333;font-weight:700}
-.pirateCard .dailyGold{font-weight:900;font-size:15px;margin:4px 0}
-.pirateCard .priceBtn{margin-top:8px;border-radius:999px;padding:8px 6px;font-weight:900;font-size:15px;display:flex;justify-content:center;gap:6px}
-.pirateCard.owned{outline:3px solid #FFD700}
-.pirateCard .ownedBadge{position:absolute;top:6px;right:6px;background:#FFD700;border:2px solid #6b6250;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:900}
-.partRow{display:flex;gap:8px;margin-top:10px}
-.partRow input{flex:1;margin:0}
-.copyBtn{width:110px;border-radius:12px;font-weight:900}
-.twoBox{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-.infoBox{text-align:center;padding:12px 6px}
-.infoBox h3{font-size:16px}
-.infoBox p{font-size:12px;margin-top:6px;line-height:1.4;color:#333}
-.statLabel{text-align:center;font-weight:900;padding:10px 4px;font-size:14px}
-.statVal{text-align:center;font-weight:900;padding:12px 4px;font-size:20px}
-.tableHead{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;background:#C8D8B8;padding:10px 6px;font-weight:900;font-size:13px;text-align:center;border-radius:10px 10px 0 0}
-.profileAvatar{width:110px;height:110px;border-radius:50%;border:4px solid #FFD700;object-fit:cover;background:#fff;margin:6px auto}
-.profileName{font-size:32px;font-weight:900;text-align:center;margin-top:6px}
-.idPill{display:inline-block;background:#D8D0B2;border:2px solid #8a7a5a;border-radius:999px;padding:6px 14px;font-weight:900;margin:8px auto}
-.guideRow{display:flex;gap:10px;margin-top:10px}
-.guideRow button{flex:1;padding:12px 4px;font-weight:900;font-size:14px}
-.modalBg{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:flex-end;justify-content:center;z-index:999}
-.modal{background:#2B2118;border:3px solid #FFD700;border-top-left-radius:24px;border-top-right-radius:24px;padding:22px 16px 18px;text-align:center;width:100%;max-width:480px}
-.modal h2{color:#FFE9A8;font-size:26px}
-.modal h3{color:#FFE9A8;font-size:24px;margin:14px 0 4px}
-.modal p{color:#CFC7A8}
-.modal .price{color:#FFD700;font-size:28px;font-weight:900;margin:12px 0}
-.modalRow{display:flex;gap:10px;margin-top:14px}
-.modalRow button{flex:1;padding:14px;font-weight:900;font-size:16px}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:flex;justify-content:space-around;padding:10px;color:#888;z-index:99;border-top:1px solid #333}
-.nav div{text-align:center;font-size:12px;line-height:1.2}
+.wrap{position:relative;width:100%}
+.wrap img{width:100%;display:block;border-radius:18px}
+.num{position:absolute;font-weight:900;color:#111;font-family:Georgia,serif;text-shadow:0 1px 0 #fff}
+.btn{position:absolute;background:transparent;border:none;cursor:pointer}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#0a0a0a;display:flex;justify-content:space-around;padding:10px;color:#777;border-top:1px solid #333}
+.nav div{text-align:center;font-size:12px}
 .nav div.active{color:#FFD700}
-.starter{background:#111;color:#FFD700;border:2px solid #FFD700;border-radius:12px;padding:10px;text-align:center;font-weight:900;margin-bottom:10px;font-size:13px}
-.adNote{font-size:11px;color:#666;margin-top:6px;text-align:center}
-.activeBadge{background:#111;color:#FFD700;border:2px solid #FFD700;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:900}
 </style></head><body>
-<div class="top">
-  <div class="stone-oval bal-oval"><span class="coin">🪙</span><div><small>My Balance</small><b id="bal">100 Gold</b></div></div>
-  <div class="prof"><img id="topAvatar" src="https://api.dicebear.com/9.x/pirate/svg?seed=Captain"><button class="stone prof-btn" onclick="showPage('profile')"><span id="topName">Profile</span></button></div>
+
+<!-- ===== HEADER - YOUR header.png ===== -->
+<div class="wrap">
+  <img src="header.png">
+  <!-- My Balance number - sits on top of 3.4609 -->
+  <div class="num" id="bal" style="left:22%;top:32%;font-size:24px">3.4609</div>
+  <!-- Daily income - sits on top of +291.00 -->
+  <div class="num" id="dailyIncomeTop" style="left:62%;top:86%;font-size:22px">+291.00</div>
+  <!-- Invisible buttons over Pirates / Deposit / Withdraw / Partners -->
+  <button class="btn" style="left:3%;top:52%;width:22%;height:18%" onclick="showPage('pirates')"></button>
+  <button class="btn" style="left:27%;top:52%;width:22%;height:18%" onclick="showPage('deposit')"></button>
+  <button class="btn" style="left:51%;top:52%;width:22%;height:18%" onclick="showPage('withdraw')"></button>
+  <button class="btn" style="left:75%;top:52%;width:22%;height:18%" onclick="showPage('partners')"></button>
+  <button class="btn" style="left:84%;top:5%;width:14%;height:22%" onclick="showPage('profile')"></button>
 </div>
-<div class="tabs">
-  <button class="stone active" onclick="showPage('pirates')">Pirates</button>
-  <button class="stone" onclick="showPage('deposit')">Deposit</button>
-  <button class="stone" onclick="showPage('withdraw')">Withdraw</button>
-  <button class="stone" onclick="showPage('partners')">Partners</button>
-</div>
+
+<!-- ===== PIRATES PAGE ===== -->
 <div id="page-pirates">
-  <div class="starter">🎁 NEW CAPTAINS GET 100 GOLD FREE — Already in your balance!</div>
-  <div class="stone-oval daily-oval">Daily income <span>🪙</span> <span id="dailyIncomeTop">+0.00</span> <span class="activeBadge" id="activeCount">Active: 0 / 10</span> <span style="font-size:11px">14 days • 15% upkeep • Tiered Cap</span></div>
-  <div class="collectWrap">
-    <div class="stone stone-card parrotCard">
-      <div class="parrot">🦜</div>
-      <div style="font-size:11px;color:#666">Your Parrot guards the loot</div>
-      <div class="count" id="crewCount">0 / 10</div>
-      <div class="gold">🪙 <span id="pending">0.00</span></div>
-      <button class="stone bigbtn" style="margin-top:8px" onclick="collectWithAd()">COLLECT</button>
-      <p class="adNote">📺 Short ad supports your crew — then you collect</p>
-      <p id="collectMsg" style="font-size:12px;margin-top:6px"></p>
-    </div>
-    <div class="crewGrid" id="crewGrid"></div>
+  <div class="wrap" style="margin-top:10px">
+    <img src="parrot-card.png">
+    <div class="num" id="crewCount" style="left:50%;top:68%;transform:translateX(-50%);font-size:22px">18</div>
+    <div class="num" id="pending" style="left:50%;top:76%;transform:translateX(-50%);font-size:20px">17.8145</div>
+    <button class="btn" style="left:6%;bottom:2%;width:88%;height:11%" onclick="collectWithAd()"></button>
   </div>
-  <div class="tavernTitle">☠️ PIRATE TAVERN & RECRUITS</div>
-  <div class="shopGrid" id="shopList"></div>
-  <p class="adNote">Max 10 Active Pirates • Small 200% cap • Mid 160% • Big 130% • Re-hire after 14 days</p>
+
+  <div class="wrap" style="margin-top:10px"><img src="crew-grid.png"></div>
+
+  <h3 style="color:#FFD700;margin:14px 4px">☠️ PIRATE TAVERN & RECRUITS</h3>
+
+  <!-- Tavern 1 - Deckhand 10, Powder 25, Buccaneer 50, Swash 100 -->
+  <div class="wrap"><img src="tavern-1.png">
+    <button class="btn" style="left:5%;top:44%;width:42%;height:9%" onclick="openRecruit('deckhand')"></button>
+    <button class="btn" style="left:53%;top:44%;width:42%;height:9%" onclick="openRecruit('powder')"></button>
+    <button class="btn" style="left:5%;top:94%;width:42%;height:5%" onclick="openRecruit('buccaneer')"></button>
+    <button class="btn" style="left:53%;top:94%;width:42%;height:5%" onclick="openRecruit('swash')"></button>
+  </div>
+  <!-- Tavern 2 -->
+  <div class="wrap" style="margin-top:10px"><img src="tavern-2.png">
+    <button class="btn" style="left:5%;top:44%;width:42%;height:9%" onclick="openRecruit('corsair')"></button>
+    <button class="btn" style="left:53%;top:44%;width:42%;height:9%" onclick="openRecruit('gunner')"></button>
+    <button class="btn" style="left:5%;top:94%;width:42%;height:5%" onclick="openRecruit('navigator')"></button>
+    <button class="btn" style="left:53%;top:94%;width:42%;height:5%" onclick="openRecruit('quarter')"></button>
+  </div>
+  <!-- Tavern 3 -->
+  <div class="wrap" style="margin-top:10px"><img src="tavern-3.png">
+    <button class="btn" style="left:5%;top:44%;width:42%;height:9%" onclick="openRecruit('mate')"></button>
+    <button class="btn" style="left:53%;top:44%;width:42%;height:9%" onclick="openRecruit('captain')"></button>
+    <button class="btn" style="left:5%;top:94%;width:42%;height:5%" onclick="openRecruit('dread')"></button>
+    <button class="btn" style="left:53%;top:94%;width:42%;height:5%" onclick="openRecruit('king')"></button>
+  </div>
 </div>
+
+<!-- ===== DEPOSIT ===== -->
 <div id="page-deposit" class="hidden">
-  <div class="stone-card"><h2>Deposit - Buy Gold</h2><p style="font-size:13px;margin-top:4px">10,000 Gold = $1.00. Deposit fee 0% - you get full Gold.</p>
-  <div class="stone-card-inner" style="margin-top:10px;font-size:13px"><b>🎁 Deposit Bonus:</b><br>$1-$9 = 0% • $10-$49 = +5% • $50+ = +10% (max)</div>
-  <div id="depositList" style="margin-top:10px"></div></div>
-  <div class="stone-card"><h3>✅ I Already Paid - Verify My Payment</h3><p style="font-size:12px;margin-top:4px">1. Send crypto to admin wallet<br>2. Copy TxID / Hash<br>3. Paste it here - admin checks blockchain</p>
-  <select id="depMethod"><option>USDT (TRC20)</option><option>USDT (BEP20)</option><option>USDT (TON)</option><option>GRAM</option><option>TRX</option></select>
-  <input id="depTxId" placeholder="Paste TxID / Hash">
-  <input id="depGold" type="number" placeholder="Gold you paid for e.g. 50000">
-  <button class="bigbtn" style="margin-top:10px" onclick="verifyDeposit()">🔍 SEND TO ADMIN FOR VERIFICATION</button><p id="depMsg"></p></div>
+  <div class="wrap"><img src="deposit.png">
+    <button class="btn" style="left:4%;top:18%;width:92%;height:12%" onclick="selectDeposit('GRAM')"></button>
+    <button class="btn" style="left:4%;top:32%;width:92%;height:12%" onclick="selectDeposit('TRX')"></button>
+    <button class="btn" style="left:4%;top:46%;width:92%;height:12%" onclick="selectDeposit('USDT (BEP20)')"></button>
+    <button class="btn" style="left:4%;top:60%;width:92%;height:12%" onclick="selectDeposit('BNB (BEP20)')"></button>
+    <button class="btn" style="left:4%;top:74%;width:92%;height:12%" onclick="selectDeposit('USDT (TRC20)')"></button>
+    <button class="btn" style="left:4%;top:88%;width:92%;height:12%" onclick="selectDeposit('USDT (TON)')"></button>
+  </div>
+  <div style="background:#EDE6CC;border-radius:14px;padding:12px;margin-top:10px">
+    <input id="depTxId" placeholder="Paste TxID / Hash" style="width:100%;padding:12px;border-radius:10px;border:2px solid #8a7a5a;margin-bottom:8px">
+    <input id="depGold" type="number" placeholder="Gold e.g. 50000" style="width:100%;padding:12px;border-radius:10px;border:2px solid #8a7a5a;margin-bottom:8px">
+    <button onclick="verifyDeposit()" style="width:100%;padding:13px;border-radius:999px;background:#FFD700;font-weight:900">🔍 SEND TO ADMIN</button>
+    <p id="depMsg"></p>
+  </div>
 </div>
+
+<!-- ===== WITHDRAW ===== -->
 <div id="page-withdraw" class="hidden">
-  <div class="stone-card"><h2>Withdraw</h2>
-    <div style="display:flex;justify-content:space-between;margin-top:8px"><span>My Balance</span><b id="wBal">0 Gold</b></div>
-    <div id="withdrawList"></div>
-    <input id="wWallet" placeholder="Wallet address UQ... / T... / 0x...">
-    <input id="wAmount" type="number" placeholder="Gold e.g. 10000">
-    <button class="bigbtn" style="margin-top:10px" onclick="doWithdraw()">✅ REQUEST WITHDRAWAL</button><p id="wMsg"></p>
-    <p style="font-size:11px;margin-top:6px">Min 10,000 Gold ($1). TRC20 Min 120,000 Gold ($12). Fee: 5% + 100 Gold on small withdraws. Withdraw unlocks after first deposit.</p>
+  <div class="wrap"><img src="withdraw.png">
+    <button class="btn" style="left:4%;top:18%;width:92%;height:12%" onclick="selectWithdraw('GRAM')"></button>
+    <button class="btn" style="left:4%;top:32%;width:92%;height:12%" onclick="selectWithdraw('TRX')"></button>
+    <button class="btn" style="left:4%;top:46%;width:92%;height:12%" onclick="selectWithdraw('USDT (BEP20)')"></button>
+    <button class="btn" style="left:4%;top:60%;width:92%;height:12%" onclick="selectWithdraw('BNB (BEP20)')"></button>
+    <button class="btn" style="left:4%;top:74%;width:92%;height:12%" onclick="selectWithdraw('USDT (TRC20)')"></button>
+    <button class="btn" style="left:4%;top:88%;width:92%;height:12%" onclick="selectWithdraw('USDT (TON)')"></button>
   </div>
-  <div class="stone-card"><h3>📜 Withdraw History</h3><div id="wHistory">No withdrawals yet</div></div>
+  <div style="background:#EDE6CC;border-radius:14px;padding:12px;margin-top:10px">
+    <input id="wWallet" placeholder="Wallet address" style="width:100%;padding:12px;border-radius:10px;border:2px solid #8a7a5a;margin-bottom:8px">
+    <input id="wAmount" type="number" placeholder="Gold e.g. 10000" style="width:100%;padding:12px;border-radius:10px;border:2px solid #8a7a5a;margin-bottom:8px">
+    <button onclick="doWithdraw()" style="width:100%;padding:13px;border-radius:999px;background:#FFD700;font-weight:900">✅ REQUEST WITHDRAWAL</button>
+    <p id="wMsg"></p>
+  </div>
 </div>
+
+<!-- ===== PARTNERS ===== -->
 <div id="page-partners" class="hidden">
-  <div class="stone-card">
-    <div class="partRow"><input class="stone" id="pendingPartners" readonly value="🪙 0"><button class="stone copyBtn" onclick="collectWithAd()">COLLECT</button></div>
-    <div class="partRow"><input class="stone" id="refLink" readonly value="https://t.me/..."><button class="stone copyBtn" onclick="copyRef()">Copy</button></div>
-    <div class="twoBox">
-      <div class="stone infoBox"><h3>🏴‍☠️ 10%</h3><p>Get 10% from partners on character purchases.</p></div>
-      <div class="stone infoBox"><h3>🪙 25</h3><p>Get 25 Gold when partner joins channel & hires a pirate.</p></div>
-    </div>
+  <div class="wrap"><img src="partners.png">
+    <div class="num" id="pendingPartnersText" style="left:30%;top:5%;font-size:26px">0</div>
+    <div class="num" id="pCount" style="left:22%;top:62%;font-size:28px">0</div>
+    <div class="num" id="pIncome" style="left:72%;top:62%;font-size:26px">0</div>
+    <button class="btn" style="left:72%;top:2%;width:26%;height:10%" onclick="collectWithAd()"></button>
+    <button class="btn" style="left:72%;top:16%;width:26%;height:10%" onclick="copyRef()"></button>
   </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
-    <div><div class="stone statLabel">Partners</div><div class="stone statVal" style="margin-top:6px" id="pCount">0</div></div>
-    <div><div class="stone statLabel">Total income</div><div class="stone statVal" style="margin-top:6px">🪙 <span id="pIncome">0</span></div></div>
-  </div>
-  <div class="stone-card" style="padding:0;overflow:hidden;margin-top:10px">
-    <div class="tableHead"><span>Date</span><span>User</span><span>Deposit</span><span>Income</span></div>
-    <div style="text-align:center;padding:18px;color:#555;font-weight:700;font-size:13px">No mates invited yet. Share your link to start earning!</div>
-  </div>
+  <input id="refLink" readonly value="https://t.me/ShayaPiratesBot?start=ref_" style="width:100%;margin-top:8px;padding:10px;border-radius:10px">
 </div>
+
+<!-- ===== PROFILE ===== -->
 <div id="page-profile" class="hidden">
-  <div class="stone-card" style="text-align:center">
-    <img id="profileAvatar" class="profileAvatar" src="https://api.dicebear.com/9.x/pirate/svg?seed=Captain">
-    <div class="profileName" id="pName">Captain</div>
-    <div><span class="idPill">ID: <span id="pId">-</span></span></div>
-    <p style="font-size:12px;color:#666"><span id="pSource">Browser Mode</span> • <span id="pMode">💾 Saved locally</span></p>
-    <div class="guideRow"><button class="stone" onclick="alert('Hire up to 10 pirates → They mine for 14 days → Watch short ad → COLLECT → Withdraw. Small pirates cap 200%, Big 130%. Invite friends for 10%.')">🦜 Captain's Guide</button><button class="stone" onclick="alert('Language: English (EN)')">Select Language</button></div>
-    <div style="text-align:center;margin-top:10px"><button class="stone" style="padding:8px 14px;font-weight:900" onclick="changePirateAvatar()">🎲 Change Pirate Avatar</button></div>
+  <div class="wrap"><img src="profile.png">
+    <div class="num" id="pName" style="left:50%;top:27%;transform:translateX(-50%);font-size:32px">MNELISI</div>
+    <div class="num" id="pId" style="left:50%;top:34%;transform:translateX(-50%);font-size:18px">ID: 1159481047</div>
+    <div class="num" id="prBal" style="left:25%;top:57%;transform:translateX(-50%);font-size:26px">3.46</div>
+    <div class="num" id="prTotal" style="left:75%;top:57%;transform:translateX(-50%);font-size:26px">1,273.46</div>
+    <div class="num" id="prDaily" style="left:25%;top:75%;transform:translateX(-50%);font-size:26px">+291.00</div>
+    <div class="num" id="prCrew" style="left:75%;top:75%;transform:translateX(-50%);font-size:26px">18</div>
+    <button class="btn" style="left:4%;top:40%;width:44%;height:8%" onclick="alert('Guide: Hire 10 pirates -> 14 days -> Watch ad -> COLLECT -> Withdraw')"></button>
+    <button class="btn" style="left:52%;top:40%;width:44%;height:8%" onclick="alert('Language: English')"></button>
   </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
-    <div><div class="stone statLabel">My balance</div><div class="stone statVal" style="margin-top:6px">🪙 <span id="prBal">0</span></div></div>
-    <div><div class="stone statLabel">Total Booty Looted</div><div class="stone statVal" style="margin-top:6px">🪙 <span id="prTotal">0</span></div></div>
-    <div><div class="stone statLabel">Daily income</div><div class="stone statVal" style="margin-top:6px">🪙 +<span id="prDaily">0</span></div></div>
-    <div><div class="stone statLabel">Owned Crew</div><div class="stone statVal" style="margin-top:6px">🏴‍☠️ <span id="prCrew">0</span> / 10</div></div>
-  </div>
-  <div class="stone-card" style="margin-top:10px">
-    <div style="display:flex;justify-content:space-between;align-items:center"><h3>📜 Transaction Records</h3></div>
-    <div class="tableHead" style="margin-top:10px"><span>Date</span><span>Method</span><span>Sum</span><span>Status</span></div>
-    <div id="txList" style="padding:10px;font-size:13px">No transaction records found</div>
-  </div>
+  <div id="txList" style="background:#EDE6CC;border-radius:14px;padding:12px;margin-top:10px">No transaction records found.</div>
 </div>
+
 <div class="nav">
   <div class="active" onclick="showPage('pirates')">🏴‍☠️<br>Pirates</div>
   <div onclick="showPage('deposit')">💰<br>Deposit</div>
   <div onclick="showPage('withdraw')">💸<br>Withdraw</div>
   <div onclick="showPage('partners')">👥<br>Partners</div>
 </div>
-<div id="recruitModal" class="modalBg hidden">
-  <div class="modal">
-    <h2>RECRUIT THIS PIRATE?</h2>
-    <h3 id="modalName">Deckhand</h3>
-    <p id="modalSlot">Slot #1 • Active: 0 / 10</p>
-    <div class="price">🪙 <span id="modalPrice">10</span> Gold</div>
-    <p id="modalDaily" style="font-size:13px">Daily income +2 Gold • 14 days</p>
-    <p style="font-size:11px;margin-top:8px">📺 Short ad plays, then pirate joins your crew</p>
-    <div class="modalRow"><button class="stone" onclick="closeModal()">Cancel</button><button class="stone" style="background:#FFD700" onclick="confirmRecruitWithAd()">Recruit</button></div>
-  </div>
-</div>
+
 <script>
-const AD_CONFIG = { GIGA_ZONE:'main', GIGA_APP_ID:'9376', ONCLICKA_SPOT_ID:'6155944' };
-let lastAdNetwork='giga';
-try{ window.initCdTma?.({ id: AD_CONFIG.ONCLICKA_SPOT_ID }).then(show => window.showOnclicka = show).catch(e=>console.log('Onclicka init fail',e)); }catch(e){}
-async function showDualAd(){
-  let tryGigaFirst = (lastAdNetwork !== 'giga');
-  lastAdNetwork = tryGigaFirst ? 'giga' : 'onclicka';
-  const tryGiga = () => new Promise((resolve)=>{ try{ if(!window.showGiga) return resolve(false); window.showGiga(AD_CONFIG.GIGA_ZONE).then(()=>resolve(true)).catch(()=>resolve(false)); setTimeout(()=>resolve(false), 8000); }catch(e){ resolve(false); } });
-  const tryOnclicka = () => new Promise((resolve)=>{ try{ if(!window.showOnclicka) return resolve(false); window.showOnclicka().then(()=>resolve(true)).catch(()=>resolve(false)); setTimeout(()=>resolve(false), 8000); }catch(e){ resolve(false); } });
-  let ok=false;
-  if(tryGigaFirst){ ok=await tryGiga(); if(!ok) ok=await tryOnclicka(); } else { ok=await tryOnclicka(); if(!ok) ok=await tryGiga(); }
-  console.log('Ad shown via', ok ? lastAdNetwork : 'none - user still proceeds');
-  return ok;
+/* KEEP YOUR EXISTING JS - just add these helpers */
+let tgUser=null; try{tgUser=window.Telegram?.WebApp?.initDataUnsafe?.user||null}catch(e){}
+let userId=tgUser?String(tgUser.id):(localStorage.getItem('shaya_pirate_id')||'web_'+Math.random().toString(36).slice(2,8));
+let userName=tgUser?(tgUser.first_name||'Captain'):'Captain';
+let user={balance:3.46,pending:17.81,dailyIncome:291,crew:[],totalLooted:1273.46,partners:0,partnerIncome:0,tx:[]};
+let selDep='GRAM', selWd='GRAM', selectedPirate=null;
+function showPage(p){['pirates','deposit','withdraw','partners','profile'].forEach(x=>document.getElementById('page-'+x).classList.toggle('hidden',x!==p)); document.querySelectorAll('.nav div').forEach(d=>d.classList.remove('active'))}
+async function loadUser(){ try{ const r=await fetch('/api/pirate/user/'+userId); user=await r.json(); }catch(e){} 
+  document.getElementById('bal').innerText=Number(user.balance||0).toFixed(4);
+  document.getElementById('dailyIncomeTop').innerText='+'+Number(user.dailyIncome||0).toFixed(2);
+  document.getElementById('pending').innerText=Number(user.pending||0).toFixed(4);
+  document.getElementById('pendingPartnersText').innerText=Number(user.pending||0).toFixed(0);
+  document.getElementById('crewCount').innerText=(user.crew||[]).reduce((a,c)=>a+c.count,0);
+  document.getElementById('pCount').innerText=user.partners||0;
+  document.getElementById('pIncome').innerText=Number(user.partnerIncome||0).toFixed(0);
+  document.getElementById('prBal').innerText=Number(user.balance||0).toFixed(2);
+  document.getElementById('prTotal').innerText=Number(user.totalLooted||0).toLocaleString(undefined,{minimumFractionDigits:2});
+  document.getElementById('prDaily').innerText='+'+Number(user.dailyIncome||0).toFixed(2);
+  document.getElementById('prCrew').innerText=(user.crew||[]).reduce((a,c)=>a+c.count,0);
+  document.getElementById('pName').innerText=userName.toUpperCase();
+  document.getElementById('pId').innerText='ID: '+userId;
+  document.getElementById('refLink').value='https://t.me/ShayaPiratesBot?start=ref_'+userId;
 }
-function getMaxPayout(price){ if(price>=10000) return 1.30; if(price>=1000) return 1.60; return 2.0; }
-let tgUser=null; try{ tgUser=window.Telegram?.WebApp?.initDataUnsafe?.user||null; }catch(e){}
-let isTelegram=!!(tgUser&&tgUser.id);
-let saved=JSON.parse(localStorage.getItem('shaya_pirate_profile')||'{}');
-if(!isTelegram){
-  if(!saved.avatarSeed){ saved.avatarSeed='Pirate'+Math.floor(Math.random()*99999); localStorage.setItem('shaya_pirate_profile',JSON.stringify(saved)); }
-  if(!saved.name){ saved.name='Captain '+saved.avatarSeed.slice(-4); localStorage.setItem('shaya_pirate_profile',JSON.stringify(saved)); }
-}
-let userId,userName,avatarUrl,profileSource;
-if(isTelegram){
-  userId=String(tgUser.id); userName=tgUser.first_name+(tgUser.last_name?' '+tgUser.last_name:'');
-  avatarUrl=tgUser.photo_url||`https://api.dicebear.com/9.x/pirate/svg?seed=${tgUser.id}`;
-  profileSource='Telegram Profile • @'+(tgUser.username||'');
-  localStorage.setItem('shaya_pirate_id',userId); localStorage.setItem('shaya_pirate_name',userName);
-} else {
-  userId=new URLSearchParams(location.search).get('start')||localStorage.getItem('shaya_pirate_id')||'web_'+Math.random().toString(36).slice(2,10);
-  userName=saved.name||localStorage.getItem('shaya_pirate_name')||'Captain';
-  avatarUrl=`https://api.dicebear.com/9.x/pirate/svg?seed=${saved.avatarSeed}`;
-  profileSource='Browser Mode • Saved locally';
-  localStorage.setItem('shaya_pirate_id',userId); localStorage.setItem('shaya_pirate_name',userName);
-}
-if(window.Telegram?.WebApp){ Telegram.WebApp.ready(); Telegram.WebApp.expand(); }
-function changePirateAvatar(){ if(isTelegram) return alert('In Telegram we use your real Telegram photo.'); saved.avatarSeed='Pirate'+Math.floor(Math.random()*99999); localStorage.setItem('shaya_pirate_profile',JSON.stringify(saved)); location.reload(); }
-let user=null,selDep='GRAM',selWd='GRAM',selectedPirate=null;
-const MAX_ACTIVE = 10;
-let SHOP=[
- {id:'deckhand',name:'Deckhand',price:10,daily:2,pct:'20%',emoji:'🧔'},
- {id:'powder',name:'Powder Monkey',price:25,daily:5,pct:'20%',emoji:'🏴‍☠️'},
- {id:'buccaneer',name:'Buccaneer',price:50,daily:11,pct:'22%',emoji:'🦜'},
- {id:'swash',name:'Swashbuckler',price:100,daily:22,pct:'22%',emoji:'⚔️'},
- {id:'corsair',name:'Corsair Raider',price:250,daily:60,pct:'24%',emoji:'🏴‍☠️'},
- {id:'gunner',name:'Master Gunner',price:500,daily:120,pct:'24%',emoji:'💣'},
- {id:'navigator',name:'Sea Navigator',price:1000,daily:250,pct:'25%',emoji:'🧭'},
- {id:'quarter',name:'Quartermaster',price:2500,daily:650,pct:'26%',emoji:'⚓'},
- {id:'mate',name:'First Mate',price:5000,daily:1350,pct:'27%',emoji:'⚔️'},
- {id:'captain',name:'Ship Captain',price:10000,daily:2800,pct:'28%',emoji:'👑'},
- {id:'dread',name:'Dread Commodore',price:25000,daily:7500,pct:'30%',emoji:'💀'},
- {id:'king',name:'Pirate King',price:50000,daily:16000,pct:'32%',emoji:'👑'}
-];
-let METHODS=[
- {id:'GRAM',dep:5000,wd:10000,label:'GRAM',sub:'Min 10,000 Gold • Fee 5%'},
- {id:'TRX',dep:5000,wd:10000,label:'TRX',sub:'Min 10,000 Gold • Fee 5%'},
- {id:'USDT (BEP20)',dep:5000,wd:10000,label:'USDT (BEP20)',sub:'Min 10,000 Gold • Fee 5%'},
- {id:'USDT (TRC20)',dep:60000,wd:120000,label:'USDT (TRC20)',sub:'Min 120,000 Gold • Fee 5%'},
- {id:'USDT (TON)',dep:5000,wd:10000,label:'USDT (TON)',sub:'Min 10,000 Gold • Fee 5%'},
- {id:'USDT (Solana)',dep:10000,wd:20000,label:'USDT (Solana)',sub:'Min 20,000 Gold • Fee 5%'},
- {id:'DOGE',dep:7500,wd:15000,label:'DOGE',sub:'Min 15,000 Gold • Fee 5%'},
- {id:'LTC',dep:5000,wd:10000,label:'LTC',sub:'Min 10,000 Gold • Fee 5%'}
-];
-function saveLocal(u){ if(!isTelegram){ localStorage.setItem('shaya_pirate_data_'+userId, JSON.stringify(u)); } }
-function loadLocal(){ try{ return JSON.parse(localStorage.getItem('shaya_pirate_data_'+userId)||'null'); }catch(e){ return null; } }
-function showPage(p){
-  ['pirates','deposit','withdraw','partners','profile'].forEach(x=>{ document.getElementById('page-'+x).classList.toggle('hidden',x!==p); });
-  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.nav div').forEach(d=>d.classList.remove('active'));
-  const map={pirates:0,deposit:1,withdraw:2,partners:3};
-  if(map[p]!==undefined) document.querySelectorAll('.tabs button')[map[p]].classList.add('active');
-}
-async function loadUser(){
-  try{ const r=await fetch('/api/pirate/user/'+userId); user=await r.json(); saveLocal(user); }
-  catch(e){ user=loadLocal()||{balance:100,pending:0,dailyIncome:0,crew:[],totalLooted:0,partners:0,partnerIncome:0,tx:[{date:new Date().toISOString().slice(0,10),method:'Welcome Bonus',amount:'+100 Gold',status:'✅'}]}; }
-  updateUI();
-}
-function fmt(n){ return Number(n||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}); }
-function getActiveCount(){ return (user.crew||[]).reduce((a,c)=>a+c.count,0); }
-function updateUI(){
- document.getElementById('topAvatar').src=avatarUrl;
- document.getElementById('topName').innerText=userName.split(' ')[0];
- document.getElementById('profileAvatar').src=avatarUrl;
- document.getElementById('bal').innerText=fmt(user.balance||0)+' Gold';
- document.getElementById('wBal').innerText=fmt(user.balance||0)+' Gold';
- document.getElementById('pending').innerText=fmt(user.pending||0);
- document.getElementById('pendingPartners').value='🪙 '+fmt(user.pending||0);
- document.getElementById('dailyIncomeTop').innerText='+'+fmt(user.dailyIncome||0);
- document.getElementById('activeCount').innerText='Active: '+getActiveCount()+' / '+MAX_ACTIVE;
- document.getElementById('crewCount').innerText=getActiveCount()+' / '+MAX_ACTIVE;
- document.getElementById('pName').innerText=userName; document.getElementById('pId').innerText=userId;
- document.getElementById('pSource').innerText=profileSource;
- document.getElementById('pMode').innerText=isTelegram?'☁️ Saved on Supabase':'💾 Saved locally';
- document.getElementById('prBal').innerText=fmt(user.balance||0); document.getElementById('prTotal').innerText=fmt(user.totalLooted||0); document.getElementById('prDaily').innerText=fmt(user.dailyIncome||0); document.getElementById('prCrew').innerText=getActiveCount();
- document.getElementById('pCount').innerText=user.partners||0; document.getElementById('pIncome').innerText=fmt(user.partnerIncome||0);
- document.getElementById('refLink').value='https://t.me/ShayaPiratesBot?start=ref_'+userId;
- document.getElementById('txList').innerHTML=(user.tx||[]).length?user.tx.map(t=>'<div style="display:grid;grid-template-columns:1fr 1.2fr 1fr .6fr;padding:8px 0;border-bottom:1px solid #ddd;font-size:12px;text-align:center"><span>'+t.date+'</span><span>'+t.method+'</span><span>'+t.amount+'</span><span>'+t.status+'</span></div>').join(''):'No transaction records found';
- let crewSlots=''; let crewMap={}; (user.crew||[]).forEach(c=>crewMap[c.id]=c);
- SHOP.slice(0,10).forEach((s,i)=>{
-   let c=crewMap[s.id];
-   if(c) crewSlots+=`<div class="stone crewSlot"><div class="p">${s.emoji}</div><div class="n">x${c.count}</div></div>`;
-   else crewSlots+=`<div class="stone crewSlot empty"><div class="p">${s.emoji}</div><div class="n">0</div></div>`;
- });
- document.getElementById('crewGrid').innerHTML=crewSlots;
- document.getElementById('shopList').innerHTML=SHOP.map((s,i)=>{
-   let c=crewMap[s.id];
-   return `<div class="stone pirateCard ${c?'owned':''}">${c?'<span class="ownedBadge">x'+c.count+'</span>':''}<div class="imgBox"><div class="pimg">${s.emoji}</div><h3>${s.name}</h3><p>Daily income ${s.pct} • Max ${Math.round(getMaxPayout(s.price)*100)}%</p><div class="dailyGold">🪙 +${s.daily.toLocaleString()}</div></div><button class="stone priceBtn" onclick="openRecruit('${s.id}')">🪙 ${s.price.toLocaleString()}</button></div>`;
- }).join('');
- document.getElementById('depositList').innerHTML=METHODS.map(m=>'<div class="stone" style="padding:12px;margin-top:8px;display:flex;justify-content:space-between;align-items:center" onclick="selDep=\''+m.id+'\'"><div><b>'+m.id+'</b><br><small>Min '+m.dep.toLocaleString()+' Gold</small></div><b>›</b></div>').join('');
- document.getElementById('withdrawList').innerHTML=METHODS.map(m=>'<div class="stone" style="padding:12px;margin-top:8px;display:flex;justify-content:space-between;align-items:center" onclick="selWd=\''+m.id+'\';document.getElementById(\'wAmount\').placeholder=\'Min '+m.wd.toLocaleString()+' Gold for '+m.id+'\'"><div><b>'+m.label+'</b><br><small>'+m.sub+'</small></div><b>›</b></div>').join('');
- document.getElementById('wHistory').innerHTML=(user.tx||[]).filter(t=>t.method.includes('Withdraw')).length?(user.tx||[]).filter(t=>t.method.includes('Withdraw')).map(t=>'<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #ddd;font-size:13px"><span>'+t.date+'</span><span>'+t.method+'</span><span>'+t.amount+'</span><span>'+t.status+'</span></div>').join(''):'No withdrawals yet';
-}
-function openRecruit(id){
-  if(getActiveCount()>=MAX_ACTIVE) return alert('⚓ Crew Full! You have 10 / 10 Active Pirates. Wait for one to expire (14 days) or let it finish its loot, then hire again.');
-  selectedPirate=SHOP.find(s=>s.id===id);
-  document.getElementById('modalName').innerText=selectedPirate.name;
-  document.getElementById('modalSlot').innerText='Active: '+getActiveCount()+' / '+MAX_ACTIVE+' • Slot #'+(SHOP.indexOf(selectedPirate)+1);
-  document.getElementById('modalPrice').innerText=selectedPirate.price.toLocaleString();
-  document.getElementById('modalDaily').innerText='Daily income +'+selectedPirate.daily.toLocaleString()+' Gold gross • +'+Math.floor(selectedPirate.daily*0.85)+' net after 15% upkeep • 14 days • Max '+(selectedPirate.price*getMaxPayout(selectedPirate.price)).toLocaleString()+' Gold ('+Math.round(getMaxPayout(selectedPirate.price)*100)+'% cap)';
-  document.getElementById('recruitModal').classList.remove('hidden');
-}
-function closeModal(){ document.getElementById('recruitModal').classList.add('hidden'); }
-async function confirmRecruitWithAd(){ closeModal(); document.getElementById('collectMsg').innerText='📺 Loading ad...'; await showDualAd(); await hire(selectedPirate.id); }
-async function collectWithAd(){ if((user.pending||0) < 1 && (user.dailyIncome||0)===0) return alert('No loot yet. Hire a pirate first!'); document.getElementById('collectMsg').innerText='📺 Loading ad to unlock COLLECT...'; await showDualAd(); await collect(); }
-async function hire(id){ const r=await fetch('/api/pirate/hire',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:userId,name:userName,pirateId:id,avatar:avatarUrl})}); const d=await r.json(); alert(d.msg); loadUser(); }
-async function collect(){ const r=await fetch('/api/pirate/collect',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:userId})}); const d=await r.json(); document.getElementById('collectMsg').innerText=d.msg; loadUser(); }
-async function doWithdraw(){ const wallet=document.getElementById('wWallet').value.trim(); const amount=Number(document.getElementById('wAmount').value); if(!wallet||!amount) return alert('Enter wallet + amount'); const r=await fetch('/api/pirate/withdraw',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:userId,name:userName,method:selWd,wallet,amount,avatar:avatarUrl})}); const d=await r.json(); document.getElementById('wMsg').innerText=d.msg||d.error; loadUser(); }
-async function verifyDeposit(){ const method=document.getElementById('depMethod').value; const txId=document.getElementById('depTxId').value.trim(); const amountGold=Number(document.getElementById('depGold').value); if(!txId||!amountGold) return alert('Paste TxID + Gold amount'); const r=await fetch('/api/pirate/deposit-request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:userId,name:userName,method,txId,amountGold})}); const d=await r.json(); document.getElementById('depMsg').innerText=d.msg||d.error; }
+function selectDeposit(m){ selDep=m; alert('Deposit method: '+m+'\nNow paste TxID below'); }
+function selectWithdraw(m){ selWd=m; alert('Withdraw method: '+m+'\nNow enter wallet + amount below'); }
+function openRecruit(id){ selectedPirate=id; if(confirm('Recruit '+id+'? Ad will play, then pirate joins.')) confirmRecruitWithAd(); }
+async function showDualAd(){ try{ if(window.showGiga) await window.showGiga('main'); }catch(e){} return true; }
+async function confirmRecruitWithAd(){ await showDualAd(); const r=await fetch('/api/pirate/hire',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:userId,name:userName,pirateId:selectedPirate})}); const d=await r.json(); alert(d.msg); loadUser(); }
+async function collectWithAd(){ await showDualAd(); const r=await fetch('/api/pirate/collect',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:userId})}); const d=await r.json(); alert(d.msg); loadUser(); }
+async function doWithdraw(){ const wallet=document.getElementById('wWallet').value; const amount=Number(document.getElementById('wAmount').value); const r=await fetch('/api/pirate/withdraw',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:userId,name:userName,method:selWd,wallet,amount})}); const d=await r.json(); document.getElementById('wMsg').innerText=d.msg||d.error; loadUser(); }
+async function verifyDeposit(){ const txId=document.getElementById('depTxId').value; const amountGold=Number(document.getElementById('depGold').value); const r=await fetch('/api/pirate/deposit-request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:userId,name:userName,method:selDep,txId,amountGold})}); const d=await r.json(); document.getElementById('depMsg').innerText=d.msg||d.error; }
 function copyRef(){ navigator.clipboard.writeText(document.getElementById('refLink').value); alert('Copied!'); }
-(function(){ const s=new URLSearchParams(location.search).get('start'); if(s && s.startsWith('ref_')){ fetch('/api/pirate/set-ref',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:userId,ref:s.replace('ref_','')})}); } })();
-loadUser(); setInterval(loadUser, 30000);
+if(window.Telegram?.WebApp){ Telegram.WebApp.ready(); Telegram.WebApp.expand(); }
+loadUser();
 </script></body></html>
