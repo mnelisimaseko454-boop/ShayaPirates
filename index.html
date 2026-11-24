@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shaya Pirates</title><script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}body{background:#0a0a0a;color:#111;padding:10px;padding-bottom:90px}
+.top{display:flex;justify-content:space-between}.pill{background:#d9d2b8;border:3px solid #8a7a4a;border-radius:30px;padding:8px 16px;font-weight:900}
+.pill small{display:block;font-size:11px;color:#555}
+.tabs{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin:12px 0}.tabs button{background:#d9d2b8;border:2px solid #8a7a4a;border-radius:6px;padding:12px 4px;font-weight:900;cursor:pointer}.tabs button.active{background:#FFD700}
+.card{background:#efe8d0;border-radius:18px;padding:14px;margin-top:10px;border:3px solid #8a7a4a}
+.collectBox{background:#FFD700;border:3px solid #8a7a4a;border-radius:14px;padding:14px;text-align:center}
+.collectBox .big{font-size:32px;font-weight:900}
+.bigbtn{background:#FFD700;border:none;width:100%;padding:14px;border-radius:10px;font-weight:900;cursor:pointer;margin-top:10px;font-size:16px}
+.pirate{background:#fff;border:2px solid #ddd;border-radius:12px;padding:12px;margin-top:10px;display:flex;gap:10px}
+.pirate button{background:#FFD700;border:none;padding:10px;border-radius:8px;font-weight:900;width:100%;margin-top:6px}
+.stone{background:#d9d2b8;border:2px solid #8a7a4a;border-radius:10px;padding:12px;margin-top:8px;display:flex;justify-content:space-between;cursor:pointer}
+.hidden{display:none!important}input,select{width:100%;padding:12px;border-radius:10px;border:1px solid #aaa;background:#fff;margin-top:8px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:flex;justify-content:space-around;padding:12px;color:#fff}.nav div{text-align:center;font-size:12px;cursor:pointer}.nav div.active{color:#FFD700}
+</style></head><body>
+<div class="top"><div class="pill"><small>🪙 My Balance - Buy Pirates</small><span id="bal">0 Gold</span></div><button onclick="showPage('profile')" style="background:#d9d2b8;border:2px solid #8a7a4a;padding:10px;border-radius:6px;font-weight:900">Profile</button></div>
+<div class="tabs"><button id="t-pirates" class="active" onclick="showPage('pirates')">Pirates</button><button onclick="showPage('deposit')">Deposit</button><button onclick="showPage('withdraw')">Withdraw</button><button onclick="showPage('partners')">Partners</button></div>
+
+<div id="page-pirates">
+<div class="collectBox"><small>💰 COLLECT - Your pirates already mined this</small><div class="big" id="pending">0 Gold</div><p id="dailyLine">Daily Income: +0 Gold • Expires in 30 days</p><button class="bigbtn" onclick="collect()" style="background:#111;color:#FFD700">💰 COLLECT → TO MY BALANCE</button><p id="collectMsg" style="margin-top:6px"></p><p style="font-size:11px;margin-top:6px">COLLECT moves mined Gold → My Balance. My Balance buys new pirates / withdraws.</p></div>
+<div id="crewList"></div>
+<div class="card"><h3>🏴‍☠️ Hire Pirate - 30 Days - Profit 8% to 30%</h3><div id="shopList"></div></div>
+</div>
+
+<div id="page-deposit" class="hidden">
+<div class="card"><h2>Deposit - Buy Gold</h2><p>10,000 Gold = $1.00. Deposit fee 0% - you get full Gold.</p><div id="depositList"></div></div>
+<div class="card"><h3>✅ I Already Paid - Verify My Payment</h3><p style="font-size:12px">1. Send crypto to admin wallet (ask admin for address)<br>2. Copy TxID / Hash from your wallet<br>3. Paste it here - admin checks blockchain</p>
+<select id="depMethod"><option>USDT (TRC20)</option><option>USDT (BEP20)</option><option>USDT (TON)</option><option>GRAM</option><option>TRX</option></select>
+<input id="depTxId" placeholder="Paste TxID / Hash e.g. a1b2c3...">
+<input id="depGold" type="number" placeholder="Gold you paid for e.g. 50000">
+<button class="bigbtn" onclick="verifyDeposit()">🔍 SEND TO ADMIN FOR CHECK</button><p id="depMsg"></p></div>
+</div>
+
+<div id="page-withdraw" class="hidden"><div class="card"><h2>Withdraw</h2><div id="withdrawList"></div><input id="wWallet" placeholder="Wallet address UQ... / T... / 0x..."><input id="wAmount" type="number" placeholder="Gold e.g. 10000"><button class="bigbtn" onclick="doWithdraw()">✅ REQUEST WITHDRAWAL</button><p id="wMsg"></p><p style="font-size:11px">Min 10,000 Gold ($1). TRC20 Min 120,000 Gold ($12). Fee: 5% - this keeps game running.</p></div></div>
+
+<div id="page-partners" class="hidden"><div class="card"><h2>Partners - 10%</h2><div style="display:flex;gap:6px"><input id="refLink" readonly><button onclick="copyRef()" style="background:#FFD700;border:none;padding:10px;border-radius:8px;font-weight:900">Copy</button></div><p style="margin-top:8px">You earn <b>10% of every pirate your friend buys</b> + <b>25 Gold</b> when they hire first pirate. Paid to COLLECT.</p><div style="display:flex;gap:8px;margin-top:8px"><div class="card" style="flex:1;text-align:center"><b>Partners</b><br><span id="pCount">0</span></div><div class="card" style="flex:1;text-align:center"><b>Partner Income</b><br>🪙 <span id="pIncome">0</span></div></div><div id="pList"></div></div></div>
+
+<div id="page-profile" class="hidden"><div class="card" style="text-align:center"><div style="font-size:60px">🏴‍☠️</div><h2 id="pName">Captain</h2><p>ID: <span id="pId">-</span></p></div><div style="display:flex;gap:8px"><div class="card" style="flex:1;text-align:center"><b>My Balance</b><br>🪙 <span id="prBal">0</span></div><div class="card" style="flex:1;text-align:center"><b>Total Looted</b><br>🪙 <span id="prTotal">0</span></div></div><div style="display:flex;gap:8px"><div class="card" style="flex:1;text-align:center"><b>Daily Income</b><br>+<span id="prDaily">0</span></div><div class="card" style="flex:1;text-align:center"><b>Crew</b><br><span id="prCrew">0</span></div></div><div class="card"><b>📜 History</b><div id="txList"></div></div></div>
+
+<div class="nav"><div class="active" onclick="showPage('pirates')">🏴‍☠️<br>Pirates</div><div onclick="showPage('deposit')">💰<br>Deposit</div><div onclick="showPage('withdraw')">💸<br>Withdraw</div><div onclick="showPage('partners')">👥<br>Partners</div></div>
+
+<script>
+let userId = new URLSearchParams(location.search).get('start') || window.Telegram?.WebApp?.initDataUnsafe?.user?.id || localStorage.getItem('shaya_pirate_id') || 'web_'+Math.random().toString(36).slice(2,10);
+let userName = window.Telegram?.WebApp?.initDataUnsafe?.user?.first_name || localStorage.getItem('shaya_pirate_name') || 'Captain';
+localStorage.setItem('shaya_pirate_id', userId); localStorage.setItem('shaya_pirate_name', userName);
+if(window.Telegram?.WebApp){ Telegram.WebApp.ready(); Telegram.WebApp.expand(); }
+let user=null, selDep='GRAM', selWd='GRAM';
+let SHOP=[{id:'deck',name:'Deck Hand',price:5000,daily:180,emoji:'🏴‍☠️',roi:'+8% in 30 days'},{id:'gunner',name:'Gunner',price:10000,daily:380,emoji:'💣',roi:'+14% in 30 days'},{id:'mate',name:'First Mate',price:25000,daily:1000,emoji:'⚔️',roi:'+20% in 30 days'},{id:'captain',name:'Pirate Captain',price:60000,daily:2500,emoji:'👑',roi:'+25% in 30 days'},{id:'legend',name:'Legend of Seas',price:150000,daily:6500,emoji:'💎',roi:'+30% in 30 days'}];
+let METHODS=[{id:'GRAM',dep:5000,wd:10000},{id:'TRX',dep:5000,wd:10000},{id:'USDT (BEP20)',dep:5000,wd:10000},{id:'USDT (TRC20)',dep:60000,wd:120000},{id:'USDT (TON)',dep:5000,wd:10000},{id:'USDT (Solana)',dep:10000,wd:20000},{id:'DOGE',dep:7500,wd:15000},{id:'LTC',dep:5000,wd:10000}];
+function showPage(p){ ['pirates','deposit','withdraw','partners','profile'].forEach(x=>{ document.getElementById('page-'+x).classList.toggle('hidden',x!==p); }); }
+async function loadUser(){ try{ const r=await fetch('/api/pirate/user/'+userId); user=await r.json(); }catch(e){ user={balance:0,pending:0,dailyIncome:0,crew:[],totalLooted:0,partners:0,partnerIncome:0,tx:[]}; } updateUI(); }
+function updateUI(){
+ document.getElementById('bal').innerText=(user.balance||0).toLocaleString()+' Gold';
+ document.getElementById('pending').innerText=(user.pending||0).toLocaleString()+' Gold';
+ document.getElementById('dailyLine').innerText='Daily Income: +'+(user.dailyIncome||0).toLocaleString()+' Gold • Pirates expire in 30 days';
+ document.getElementById('pName').innerText=userName; document.getElementById('pId').innerText=userId;
+ document.getElementById('prBal').innerText=(user.balance||0).toLocaleString(); document.getElementById('prTotal').innerText=(user.totalLooted||0).toLocaleString(); document.getElementById('prDaily').innerText=(user.dailyIncome||0).toLocaleString(); document.getElementById('prCrew').innerText=(user.crew||[]).length;
+ document.getElementById('pCount').innerText=user.partners||0; document.getElementById('pIncome').innerText=(user.partnerIncome||0).toLocaleString();
+ document.getElementById('refLink').value='https://t.me/ShayaPiratesBot?start=ref_'+userId;
+ document.getElementById('txList').innerHTML=(user.tx||[]).length?user.tx.map(t=>'<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #ddd"><span>'+t.date+'</span><span>'+t.method+'</span><span>'+t.amount+'</span><span>'+t.status+'</span></div>').join(''):'No records';
+ document.getElementById('crewList').innerHTML=(user.crew||[]).length?user.crew.map(c=>'<div class="pirate"><span style="font-size:40px">'+c.emoji+'</span><div><b>'+c.name+' x'+c.count+'</b><br><small>+'+(c.daily*c.count)+' Gold/day • Expires: '+c.expires+'</small></div></div>').join(''):'<div class="card">No crew yet. Hire below!</div>';
+ document.getElementById('shopList').innerHTML=SHOP.map(s=>'<div class="pirate"><span style="font-size:40px">'+s.emoji+'</span><div style="flex:1"><b>'+s.name+'</b><br><small>Cost '+s.price.toLocaleString()+' Gold • +'+s.daily+'/day • '+s.roi+'</small><button onclick="hire(\''+s.id+'\')">HIRE - '+s.price.toLocaleString()+' Gold</button></div></div>').join('');
+ document.getElementById('depositList').innerHTML=METHODS.map(m=>'<div class="stone" onclick="selDep=\''+m.id+'\';alert(\'Deposit '+m.id+' - Min '+m.dep+' Gold - Ask admin for wallet address, then paste TxID below\')"><div><b>'+m.id+'</b><br><small>Min '+m.dep.toLocaleString()+' Gold</small></div><b>›</b></div>').join('');
+ document.getElementById('withdrawList').innerHTML=METHODS.map(m=>'<div class="stone" onclick="selWd=\''+m.id+'\';document.getElementById(\'wAmount\').placeholder=\'Min '+m.wd+' Gold for '+m.id+'\'"><div><b>'+m.id+'</b><br><small>Min '+m.wd.toLocaleString()+' Gold • Fee 5%</small></div><b>›</b></div>').join('');
+}
+async function hire(id){ const r=await fetch('/api/pirate/hire',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:userId,name:userName,pirateId:id})}); const d=await r.json(); alert(d.msg); loadUser(); }
+async function collect(){ const r=await fetch('/api/pirate/collect',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:userId})}); const d=await r.json(); document.getElementById('collectMsg').innerText=d.msg; loadUser(); }
+async function doWithdraw(){ const wallet=document.getElementById('wWallet').value.trim(); const amount=Number(document.getElementById('wAmount').value); if(!wallet||!amount) return alert('Enter wallet + amount'); const r=await fetch('/api/pirate/withdraw',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:userId,name:userName,method:selWd,wallet,amount})}); const d=await r.json(); document.getElementById('wMsg').innerText=d.msg||d.error; loadUser(); }
+async function verifyDeposit(){ const method=document.getElementById('depMethod').value; const txId=document.getElementById('depTxId').value.trim(); const amountGold=Number(document.getElementById('depGold').value); if(!txId||!amountGold) return alert('Paste TxID + Gold amount'); const r=await fetch('/api/pirate/deposit-request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:userId,name:userName,method,txId,amountGold})}); const d=await r.json(); document.getElementById('depMsg').innerText=d.msg||d.error; }
+function copyRef(){ navigator.clipboard.writeText(document.getElementById('refLink').value); alert('Copied!'); }
+loadUser(); setInterval(loadUser, 30000);
+</script></body></html>
