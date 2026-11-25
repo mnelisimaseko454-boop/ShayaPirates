@@ -8,22 +8,19 @@
 body{background:#000;padding:8px;padding-bottom:80px;font-family:Georgia,serif}
 .hidden{display:none!important}
 .wrap{position:relative;width:100%}
-.wrap img{width:100%;display:block;border-radius:18px}
-.num{position:absolute;font-weight:900;color:#111;font-family:Georgia,serif;text-shadow:0 1px 0 #fff}
-.btn{position:absolute;background:transparent;border:none;cursor:pointer}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#0a0a0a;display:flex;justify-content:space-around;padding:10px;color:#777;border-top:1px solid #333}
+.wrap img{width:100%;display:block;border-radius:18px;background:#EDE6CC;min-height:120px}
+.num{position:absolute;font-weight:900;color:#111;font-family:Georgia,serif;text-shadow:0 1px 0 #fff, 0 0 4px #fff;z-index:2}
+.btn{position:absolute;background:transparent;border:none;cursor:pointer;z-index:3}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#0a0a0a;display:flex;justify-content:space-around;padding:10px;color:#777;border-top:1px solid #333;z-index:99}
 .nav div{text-align:center;font-size:12px}
 .nav div.active{color:#FFD700}
 </style></head><body>
 
-<!-- ===== HEADER - YOUR header.png ===== -->
+<!-- ===== HEADER ===== -->
 <div class="wrap">
-  <img src="header.png">
-  <!-- My Balance number - sits on top of 3.4609 -->
+  <img src="header.jpg">
   <div class="num" id="bal" style="left:22%;top:32%;font-size:24px">3.4609</div>
-  <!-- Daily income - sits on top of +291.00 -->
   <div class="num" id="dailyIncomeTop" style="left:62%;top:86%;font-size:22px">+291.00</div>
-  <!-- Invisible buttons over Pirates / Deposit / Withdraw / Partners -->
   <button class="btn" style="left:3%;top:52%;width:22%;height:18%" onclick="showPage('pirates')"></button>
   <button class="btn" style="left:27%;top:52%;width:22%;height:18%" onclick="showPage('deposit')"></button>
   <button class="btn" style="left:51%;top:52%;width:22%;height:18%" onclick="showPage('withdraw')"></button>
@@ -34,32 +31,29 @@ body{background:#000;padding:8px;padding-bottom:80px;font-family:Georgia,serif}
 <!-- ===== PIRATES PAGE ===== -->
 <div id="page-pirates">
   <div class="wrap" style="margin-top:10px">
-    <img src="parrot-card.png">
+    <img src="parrot-card.jpg">
     <div class="num" id="crewCount" style="left:50%;top:68%;transform:translateX(-50%);font-size:22px">18</div>
     <div class="num" id="pending" style="left:50%;top:76%;transform:translateX(-50%);font-size:20px">17.8145</div>
     <button class="btn" style="left:6%;bottom:2%;width:88%;height:11%" onclick="collectWithAd()"></button>
   </div>
 
-  <div class="wrap" style="margin-top:10px"><img src="crew-grid.png"></div>
+  <div class="wrap" style="margin-top:10px"><img src="crew-grid.jpg"></div>
 
   <h3 style="color:#FFD700;margin:14px 4px">☠️ PIRATE TAVERN & RECRUITS</h3>
 
-  <!-- Tavern 1 - Deckhand 10, Powder 25, Buccaneer 50, Swash 100 -->
-  <div class="wrap"><img src="tavern-1.png">
+  <div class="wrap"><img src="tavern-1.jpg">
     <button class="btn" style="left:5%;top:44%;width:42%;height:9%" onclick="openRecruit('deckhand')"></button>
     <button class="btn" style="left:53%;top:44%;width:42%;height:9%" onclick="openRecruit('powder')"></button>
     <button class="btn" style="left:5%;top:94%;width:42%;height:5%" onclick="openRecruit('buccaneer')"></button>
     <button class="btn" style="left:53%;top:94%;width:42%;height:5%" onclick="openRecruit('swash')"></button>
   </div>
-  <!-- Tavern 2 -->
-  <div class="wrap" style="margin-top:10px"><img src="tavern-2.png">
+  <div class="wrap" style="margin-top:10px"><img src="tavern-2.jpg">
     <button class="btn" style="left:5%;top:44%;width:42%;height:9%" onclick="openRecruit('corsair')"></button>
     <button class="btn" style="left:53%;top:44%;width:42%;height:9%" onclick="openRecruit('gunner')"></button>
     <button class="btn" style="left:5%;top:94%;width:42%;height:5%" onclick="openRecruit('navigator')"></button>
     <button class="btn" style="left:53%;top:94%;width:42%;height:5%" onclick="openRecruit('quarter')"></button>
   </div>
-  <!-- Tavern 3 -->
-  <div class="wrap" style="margin-top:10px"><img src="tavern-3.png">
+  <div class="wrap" style="margin-top:10px"><img src="tavern-3.jpg">
     <button class="btn" style="left:5%;top:44%;width:42%;height:9%" onclick="openRecruit('mate')"></button>
     <button class="btn" style="left:53%;top:44%;width:42%;height:9%" onclick="openRecruit('captain')"></button>
     <button class="btn" style="left:5%;top:94%;width:42%;height:5%" onclick="openRecruit('dread')"></button>
@@ -69,7 +63,7 @@ body{background:#000;padding:8px;padding-bottom:80px;font-family:Georgia,serif}
 
 <!-- ===== DEPOSIT ===== -->
 <div id="page-deposit" class="hidden">
-  <div class="wrap"><img src="deposit.png">
+  <div class="wrap"><img src="deposit.jpg">
     <button class="btn" style="left:4%;top:18%;width:92%;height:12%" onclick="selectDeposit('GRAM')"></button>
     <button class="btn" style="left:4%;top:32%;width:92%;height:12%" onclick="selectDeposit('TRX')"></button>
     <button class="btn" style="left:4%;top:46%;width:92%;height:12%" onclick="selectDeposit('USDT (BEP20)')"></button>
@@ -87,7 +81,7 @@ body{background:#000;padding:8px;padding-bottom:80px;font-family:Georgia,serif}
 
 <!-- ===== WITHDRAW ===== -->
 <div id="page-withdraw" class="hidden">
-  <div class="wrap"><img src="withdraw.png">
+  <div class="wrap"><img src="withdraw.jpg">
     <button class="btn" style="left:4%;top:18%;width:92%;height:12%" onclick="selectWithdraw('GRAM')"></button>
     <button class="btn" style="left:4%;top:32%;width:92%;height:12%" onclick="selectWithdraw('TRX')"></button>
     <button class="btn" style="left:4%;top:46%;width:92%;height:12%" onclick="selectWithdraw('USDT (BEP20)')"></button>
@@ -105,7 +99,7 @@ body{background:#000;padding:8px;padding-bottom:80px;font-family:Georgia,serif}
 
 <!-- ===== PARTNERS ===== -->
 <div id="page-partners" class="hidden">
-  <div class="wrap"><img src="partners.png">
+  <div class="wrap"><img src="partners.jpg">
     <div class="num" id="pendingPartnersText" style="left:30%;top:5%;font-size:26px">0</div>
     <div class="num" id="pCount" style="left:22%;top:62%;font-size:28px">0</div>
     <div class="num" id="pIncome" style="left:72%;top:62%;font-size:26px">0</div>
@@ -117,7 +111,7 @@ body{background:#000;padding:8px;padding-bottom:80px;font-family:Georgia,serif}
 
 <!-- ===== PROFILE ===== -->
 <div id="page-profile" class="hidden">
-  <div class="wrap"><img src="profile.png">
+  <div class="wrap"><img src="profile.jpg">
     <div class="num" id="pName" style="left:50%;top:27%;transform:translateX(-50%);font-size:32px">MNELISI</div>
     <div class="num" id="pId" style="left:50%;top:34%;transform:translateX(-50%);font-size:18px">ID: 1159481047</div>
     <div class="num" id="prBal" style="left:25%;top:57%;transform:translateX(-50%);font-size:26px">3.46</div>
@@ -138,7 +132,6 @@ body{background:#000;padding:8px;padding-bottom:80px;font-family:Georgia,serif}
 </div>
 
 <script>
-/* KEEP YOUR EXISTING JS - just add these helpers */
 let tgUser=null; try{tgUser=window.Telegram?.WebApp?.initDataUnsafe?.user||null}catch(e){}
 let userId=tgUser?String(tgUser.id):(localStorage.getItem('shaya_pirate_id')||'web_'+Math.random().toString(36).slice(2,8));
 let userName=tgUser?(tgUser.first_name||'Captain'):'Captain';
