@@ -205,4 +205,12 @@ app.post('/api/pirate/approve-deposit', async (req,res)=>{
   u.tx.unshift({date:new Date().toISOString().slice(0,10),method:'Deposit '+t.method,amount:'+'+t.amount+' Gold',status:'✅'}); upd(u); saveLocalFile(); saveTxToSupabase(t); res.json({success:true,tx:t});
 });
 app.get('/api/pirate/admin/txs',(req,res)=>{ res.json(txs.slice().reverse()); });
+// Fallback - must be AFTER all /api routes, BEFORE listen
+app.get('/', (req,res)=>{ res.sendFile(path.join(__dirname, 'index.html')); });
+app.get('*', (req,res)=>{
+  if(req.path.startsWith('/api/')) return res.status(404).json({error:'not found'});
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+const PORT=process.env.PORT||3000; app.listen(PORT,()=>console.log('Shaya Pirates FINAL Tiered Cap 10/14/15% running',PORT));
 const PORT=process.env.PORT||3000; app.listen(PORT,()=>console.log('Shaya Pirates FINAL Tiered Cap 10/14/15% running',PORT));
