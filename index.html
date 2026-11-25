@@ -73,7 +73,6 @@ input,select{width:100%;padding:12px;border-radius:10px;border:2px solid #8a7a5a
 .nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:flex;justify-content:space-around;padding:10px;color:#888;z-index:99;border-top:1px solid #333}
 .nav div{text-align:center;font-size:12px;line-height:1.2}
 .nav div.active{color:#FFD700}
-.starter{background:#111;color:#FFD700;border:2px solid #FFD700;border-radius:12px;padding:10px;text-align:center;font-weight:900;margin-bottom:10px;font-size:13px}
 .adNote{font-size:11px;color:#666;margin-top:6px;text-align:center}
 .activeBadge{background:#111;color:#FFD700;border:2px solid #FFD700;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:900}
 </style></head><body>
@@ -88,8 +87,7 @@ input,select{width:100%;padding:12px;border-radius:10px;border:2px solid #8a7a5a
   <button class="stone" onclick="showPage('partners')">Partners</button>
 </div>
 <div id="page-pirates">
-  <div class="starter">🎁 NEW CAPTAINS GET 100 GOLD FREE — Already in your balance!</div>
-  <div class="stone-oval daily-oval">Daily income <span>🪙</span> <span id="dailyIncomeTop">+0.00</span> <span class="activeBadge" id="activeCount">Active: 0 / 10</span> <span style="font-size:11px">14 days • 15% upkeep • Tiered Cap</span></div>
+  <div class="stone-oval daily-oval">Daily income <span>🪙</span> <span id="dailyIncomeTop">+0.00</span> <span class="activeBadge" id="activeCount">Active: 0 / 10</span></div>
   <div class="collectWrap">
     <div class="stone stone-card parrotCard">
       <div class="parrot">🦜</div>
@@ -97,18 +95,15 @@ input,select{width:100%;padding:12px;border-radius:10px;border:2px solid #8a7a5a
       <div class="count" id="crewCount">0 / 10</div>
       <div class="gold">🪙 <span id="pending">0.00</span></div>
       <button class="stone bigbtn" style="margin-top:8px" onclick="collectWithAd()">COLLECT</button>
-      <p class="adNote">📺 Short ad supports your crew — then you collect</p>
       <p id="collectMsg" style="font-size:12px;margin-top:6px"></p>
     </div>
     <div class="crewGrid" id="crewGrid"></div>
   </div>
   <div class="tavernTitle">☠️ PIRATE TAVERN & RECRUITS</div>
   <div class="shopGrid" id="shopList"></div>
-  <p class="adNote">Max 10 Active Pirates • Small 200% cap • Mid 160% • Big 130% • Re-hire after 14 days</p>
 </div>
 <div id="page-deposit" class="hidden">
   <div class="stone-card"><h2>Deposit - Buy Gold</h2><p style="font-size:13px;margin-top:4px">10,000 Gold = $1.00. Deposit fee 0% - you get full Gold.</p>
-  <div class="stone-card-inner" style="margin-top:10px;font-size:13px"><b>🎁 Deposit Bonus:</b><br>$1-$9 = 0% • $10-$49 = +5% • $50+ = +10% (max)</div>
   <div id="depositList" style="margin-top:10px"></div></div>
   <div class="stone-card"><h3>✅ I Already Paid - Verify My Payment</h3><p style="font-size:12px;margin-top:4px">1. Send crypto to admin wallet<br>2. Copy TxID / Hash<br>3. Paste it here - admin checks blockchain</p>
   <select id="depMethod"><option>USDT (TRC20)</option><option>USDT (BEP20)</option><option>USDT (TON)</option><option>GRAM</option><option>TRX</option></select>
@@ -150,7 +145,7 @@ input,select{width:100%;padding:12px;border-radius:10px;border:2px solid #8a7a5a
     <img id="profileAvatar" class="profileAvatar" src="https://api.dicebear.com/9.x/pirate/svg?seed=Captain">
     <div class="profileName" id="pName">Captain</div>
     <div><span class="idPill">ID: <span id="pId">-</span></span></div>
-    <p style="font-size:12px;color:#666"><span id="pSource">Browser Mode</span> • <span id="pMode">💾 Saved locally</span></p>
+    <p style="font-size:12px;color:#666"><span id="pSource">Browser Mode</span></p>
     <div class="guideRow"><button class="stone" onclick="alert('Hire up to 10 pirates → They mine for 14 days → Watch short ad → COLLECT → Withdraw. Small pirates cap 200%, Big 130%. Invite friends for 10%.')">🦜 Captain's Guide</button><button class="stone" onclick="alert('Language: English (EN)')">Select Language</button></div>
     <div style="text-align:center;margin-top:10px"><button class="stone" style="padding:8px 14px;font-weight:900" onclick="changePirateAvatar()">🎲 Change Pirate Avatar</button></div>
   </div>
@@ -215,7 +210,7 @@ if(isTelegram){
   userId=new URLSearchParams(location.search).get('start')||localStorage.getItem('shaya_pirate_id')||'web_'+Math.random().toString(36).slice(2,10);
   userName=saved.name||localStorage.getItem('shaya_pirate_name')||'Captain';
   avatarUrl=`https://api.dicebear.com/9.x/pirate/svg?seed=${saved.avatarSeed}`;
-  profileSource='Browser Mode • Saved locally';
+  profileSource='Browser Mode';
   localStorage.setItem('shaya_pirate_id',userId); localStorage.setItem('shaya_pirate_name',userName);
 }
 if(window.Telegram?.WebApp){ Telegram.WebApp.ready(); Telegram.WebApp.expand(); }
@@ -275,7 +270,6 @@ function updateUI(){
  document.getElementById('crewCount').innerText=getActiveCount()+' / '+MAX_ACTIVE;
  document.getElementById('pName').innerText=userName; document.getElementById('pId').innerText=userId;
  document.getElementById('pSource').innerText=profileSource;
- document.getElementById('pMode').innerText=isTelegram?'☁️ Saved on Supabase':'💾 Saved locally';
  document.getElementById('prBal').innerText=fmt(user.balance||0); document.getElementById('prTotal').innerText=fmt(user.totalLooted||0); document.getElementById('prDaily').innerText=fmt(user.dailyIncome||0); document.getElementById('prCrew').innerText=getActiveCount();
  document.getElementById('pCount').innerText=user.partners||0; document.getElementById('pIncome').innerText=fmt(user.partnerIncome||0);
  document.getElementById('refLink').value='https://t.me/ShayaPiratesBot?start=ref_'+userId;
